@@ -52,7 +52,7 @@ Releases follow the [release](.agents/skills/release/SKILL.md) skill: a signed t
 
 ### Commit Scopes
 
-`spec` (validation rules), `config`, `cli`, `release`, `agents`.
+`spec` (validation rules), `config`, `cli`, `agents`; workflows and GoReleaser without scope.
 
 ---
 

@@ -1,9 +1,9 @@
-[#FR-1.3]
+[[FR-1.3]]
 === FR-1.3 References
 
 .Acceptance criteria
-. Every reference `<<ID>>` or `<<ID,text>>` in a file below a master's folder must point to an
-  anchor; otherwise `<file>: unresolved reference <<ID>>`, once per file and ID.
+. Every reference `+<<ID>>+` or `+<<ID,text>>+` in a file below a master's folder must point to an
+  anchor; otherwise `+<file>: unresolved reference <<ID>>+`, once per file and ID.
 
 Stakeholder need:: SPEC.md §1.2 +
 Effort:: 0.5 h

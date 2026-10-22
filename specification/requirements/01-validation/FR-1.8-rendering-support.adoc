@@ -1,0 +1,16 @@
+[[FR-1.8]]
+=== FR-1.8 Support for rendering
+
+.Acceptance criteria
+. `spec-validator -masters [project-root]` prints the configured master files, one per line,
+  in configuration order.
+. `spec-validator -link <dir> [project-root]` reads the flattened masters below `<dir>` (each at
+  its path relative to the project root) and turns every reference `+<<ID>>+` or
+  `+<<ID,text>>+` to an anchor of another master into `+xref:<relative master>#ID[text]+`
+  (`text` defaults to the ID). References within the same master stay unchanged.
+. `-link` refuses an invalid specification: it reports the problems with exit code 1 and
+  writes nothing. A missing flattened master is exit code 2.
+. Only one of `-fix`, `-masters` and `-link` per call.
+
+Stakeholder need:: SPEC.md §1.7 +
+Effort:: 2 h

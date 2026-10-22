@@ -1,0 +1,21 @@
+[[US-1.3]]
+=== US-1.3 Anchor syntax that survives rendering
+
+Status:: Done (0.1.0) +
+Effort:: 2.5 h +
+Traces to:: <<TS-1.1>>, <<TS-1.4>>, <<FR-1.2>>, <<FR-1.7>>
+
+As an author of a specification, I want the validator to reject `+[#FR-1.2]+` and to rewrite it
+for me, so that every item keeps its own id in the rendered HTML.
+
+.Acceptance criteria
+. `+[[ID]]+` is the anchor; `+[#ID]+` is reported with the message of FR-1.2 and still resolves
+  references.
+. `-fix` rewrites all shorthand anchors, keeps CRLF and trailing blanks, lists the changed
+  files and then validates.
+. This repository's specification is migrated with `-fix`.
+
+.Test criteria
+* Unit test: a shorthand anchor gives exactly one problem; `FixAnchors` on LF and CRLF files,
+  followed by a clean validation.
+* Component test: `-fix` on a project with a shorthand anchor.

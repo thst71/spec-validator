@@ -1,8 +1,8 @@
-[#FR-1.6]
+[[FR-1.6]]
 === FR-1.6 Command line
 
 .Acceptance criteria
-. `spec-validator [-config <file>] [-version] [project-root]`; the root defaults to the
+. `spec-validator [-config <file>] [-version | -fix | -masters | -link <dir>] [project-root]`; the root defaults to the
   working directory.
 . Exit code 0 and `specifications are valid` on stdout when nothing is found.
 . Exit code 1 with one problem per line on stderr, followed by `<n> problem(s) found`.

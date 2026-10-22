@@ -13,3 +13,7 @@ include::FR-1.4-traceability.adoc[]
 include::FR-1.5-configuration.adoc[]
 
 include::FR-1.6-command-line.adoc[]
+
+include::FR-1.7-fix-anchors.adoc[]
+
+include::FR-1.8-rendering-support.adoc[]

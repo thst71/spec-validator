@@ -1,4 +1,4 @@
-[#TS-2.1]
+[[TS-2.1]]
 === TS-2.1 Build and release
 
 Implements <<FR-2.1>>, <<NFR-1>> and <<NFR-2>>.

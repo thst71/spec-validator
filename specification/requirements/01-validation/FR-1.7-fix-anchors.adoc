@@ -1,0 +1,11 @@
+[[FR-1.7]]
+=== FR-1.7 Fix shorthand anchors
+
+.Acceptance criteria
+. `spec-validator -fix [project-root]` rewrites every line `+[#<ID>]+` below the configured
+  folders to `+[[<ID>]]+`, keeping trailing blanks and the line ending, and names each changed
+  file on stdout as `fixed anchors in <file>`.
+. Then it validates as without `-fix`, with the same output and exit code.
+
+Stakeholder need:: SPEC.md §1.6 +
+Effort:: 1 h

@@ -1,4 +1,4 @@
-[#TS-1.2]
+[[TS-1.2]]
 === TS-1.2 Configuration
 
 Implements <<FR-1.5>>.

@@ -1,0 +1,25 @@
+[[US-1.4]]
+=== US-1.4 Links between the rendered masters
+
+Status:: Done (0.1.0) +
+Effort:: 2 h +
+Traces to:: <<TS-1.3>>, <<TS-1.4>>, <<FR-1.8>>
+
+As the release pipeline, I want the list of masters and the references across masters turned
+into links, so that each master becomes one HTML file and the files link each other.
+
+.Acceptance criteria
+. `-masters` prints the masters in configuration order.
+. `-link <dir>` rewrites references to other masters in the flattened masters as
+  inter-document xrefs and keeps references within a master.
+. `-link` writes nothing for an invalid specification.
+. On wos-intel, `-fix`, `asciidoctor-reducer`, `-link` and `asciidoctor --failure-level INFO`
+  render the four masters without unresolved references (except the literal `+<<ID>>+` in
+  its TS-4.2, which wos-intel fixes).
+
+.Test criteria
+* Unit test: `Link` on a tree with references within and across masters; refusal on an invalid
+  tree; `relativeMaster` for nested master paths.
+* Component test: `-masters`, `-link`, `-link` with problems, mutually exclusive modes.
+* Integration test (manual, 0.1.0): the render chain on a copy of wos-intel in the
+  `asciidoctor/docker-asciidoctor:1.108.0` image.

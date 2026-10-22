@@ -1,0 +1,19 @@
+[[TS-1.4]]
+=== TS-1.4 Anchor fix and rendering support
+
+Implements <<FR-1.7>> and <<FR-1.8>>.
+
+* `FixAnchors(root, config) ([]string, error)` in `internal/spec/rewrite.go`: per configured
+  folder and `.adoc` file, replace `+(?m)^\[#(ID)\]([ \t]*\r?)$+` with `+[[$1]]$2+` on the raw
+  bytes (CRLF kept), write only changed files with their permissions, return them relative to
+  the root.
+* `Masters(config) []string`: the `master` of every document, in order.
+* `Link(root, config, out) ([]string, error)`: `analyze` the sources; with problems, return them
+  and write nothing. Otherwise, for each master read `out/<master>`, replace every reference
+  whose ID is defined by another master with
+  `+xref:<relativeMaster(this, other)>#<ID>[<text or ID>]+` (`]` in the text escaped as `\]`)
+  and write the file back. `relativeMaster` computes the slash path from the directory of one
+  master to the other (`docs/a.adoc` → `b.adoc` gives `../b.adoc`).
+* Asciidoctor converts `+xref:other.adoc#ID[text]+` to a link `other.html#ID`, so the HTML files
+  of the masters link each other when they share a directory.
+* The command line maps `-fix`, `-masters` and `-link <dir>` onto these functions (TS-1.3).

@@ -1,11 +1,15 @@
-[#FR-1.2]
+[[FR-1.2]]
 === FR-1.2 Anchors
 
 .Acceptance criteria
-. An anchor is a line `[#<KIND>-<n>[.<n>…]]` of a configured kind.
+. An anchor is a line `+[[<KIND>-<n>[.<n>…]]]+` of a configured kind.
+. The shorthand `+[#<ID>]+` is reported as
+  `+<file>: anchor [#<ID>] must be written [[<ID>]]; Asciidoctor reads a dot after # as a role+`
+  (Asciidoctor turns `+[#FR-1.2]+` into the id `FR-1` with the role `2`). It still counts as
+  the anchor, so references to it do not fail as well.
 . An ID defined twice is reported as `<file>: duplicate anchor <ID> (also in <first file>)`.
 . An anchor whose kind is not defined in the folder it is in is reported as
   `<file>: anchor <ID> does not belong in <folder>`.
 
-Stakeholder need:: SPEC.md §1.2 +
-Effort:: 1 h
+Stakeholder need:: SPEC.md §1.2, §1.6 +
+Effort:: 1.5 h

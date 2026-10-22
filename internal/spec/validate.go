@@ -15,9 +15,10 @@ import (
 var includePattern = regexp.MustCompile(`(?m)^include::([^\[]+)\[`)
 
 type section struct {
-	id   string
-	body string // the text up to the next anchor
-	file string
+	id        string
+	shorthand bool   // written [#ID] instead of [[ID]]
+	body      string // the text up to the next anchor
+	file      string
 }
 
 type document struct {
@@ -25,28 +26,57 @@ type document struct {
 	text string
 }
 
+// patterns are the expressions built from the configured anchor kinds; nil without kinds.
+type patterns struct {
+	anchor    *regexp.Regexp // [[ID]] or the shorthand [#ID], alone on a line
+	shorthand *regexp.Regexp // [#ID] alone on a line, keeping the line ending
+	reference *regexp.Regexp // <<ID>> or <<ID,text>>
+}
+
+func newPatterns(config Config) patterns {
+	kinds := config.kinds()
+	if len(kinds) == 0 {
+		return patterns{}
+	}
+	id := `(?:` + strings.Join(quote(kinds), "|") + `)-\d+(?:\.\d+)*`
+	return patterns{
+		anchor:    regexp.MustCompile(`(?m)^(?:\[\[(` + id + `)\]\]|\[#(` + id + `)\])[ \t]*$`),
+		shorthand: regexp.MustCompile(`(?m)^\[#(` + id + `)\]([ \t]*\r?)$`),
+		reference: regexp.MustCompile(`<<(` + id + `)(?:,([^>]*))?>>`),
+	}
+}
+
 type validator struct {
-	root      string
-	anchor    *regexp.Regexp
-	reference *regexp.Regexp
-	problems  []string
+	patterns
+	root     string
+	problems []string
+}
+
+// result is a validation pass: the problems and, for the links, the master defining each ID.
+type result struct {
+	problems []string
+	masterOf map[string]string
 }
 
 // Validate returns all problems found below root; an empty list means the specification is
 // valid. The error reports files that could not be read.
 func Validate(root string, config Config) ([]string, error) {
-	resolvedRoot, err := filepath.Abs(root)
+	r, err := analyze(root, config)
 	if err != nil {
 		return nil, err
 	}
-	v := &validator{root: resolve(resolvedRoot)}
-	if kinds := config.kinds(); len(kinds) > 0 {
-		id := `(?:` + strings.Join(quote(kinds), "|") + `)-\d+(?:\.\d+)*`
-		v.anchor = regexp.MustCompile(`(?m)^\[#(` + id + `)\]\s*$`)
-		v.reference = regexp.MustCompile(`<<(` + id + `)(?:,[^>]*)?>>`)
+	return r.problems, nil
+}
+
+func analyze(root string, config Config) (result, error) {
+	absolute, err := filepath.Abs(root)
+	if err != nil {
+		return result{}, err
 	}
+	v := &validator{patterns: newPatterns(config), root: resolve(absolute)}
 
 	anchors := map[string]string{}
+	masterOf := map[string]string{}
 	var sections []section
 	var documents []document
 	for _, doc := range config.Documents {
@@ -57,11 +87,11 @@ func Validate(root string, config Config) ([]string, error) {
 		}
 		included := map[string]bool{}
 		if err := v.includes(master, included); err != nil {
-			return nil, err
+			return result{}, err
 		}
 		files, err := adocFiles(filepath.Join(v.root, filepath.FromSlash(doc.Folder)))
 		if err != nil {
-			return nil, err
+			return result{}, err
 		}
 		for _, file := range files {
 			relative := v.relative(file)
@@ -70,10 +100,13 @@ func Validate(root string, config Config) ([]string, error) {
 			}
 			text, err := readText(file)
 			if err != nil {
-				return nil, err
+				return result{}, err
 			}
 			documents = append(documents, document{file: relative, text: text})
 			for _, s := range v.sections(text) {
+				if s.shorthand {
+					v.report("%s: anchor [#%s] must be written [[%s]]; Asciidoctor reads a dot after # as a role", relative, s.id, s.id)
+				}
 				if previous, duplicate := anchors[s.id]; duplicate {
 					v.report("%s: duplicate anchor %s (also in %s)", relative, s.id, previous)
 					continue
@@ -82,6 +115,7 @@ func Validate(root string, config Config) ([]string, error) {
 					v.report("%s: anchor %s does not belong in %s", relative, s.id, doc.Folder)
 				}
 				anchors[s.id] = relative
+				masterOf[s.id] = doc.Master
 				s.file = relative
 				sections = append(sections, s)
 			}
@@ -110,7 +144,7 @@ func Validate(root string, config Config) ([]string, error) {
 			}
 		}
 	}
-	return v.problems, nil
+	return result{problems: v.problems, masterOf: masterOf}, nil
 }
 
 func (v *validator) report(format string, args ...any) {
@@ -151,7 +185,13 @@ func (v *validator) sections(text string) []section {
 		if i+1 < len(matches) {
 			end = matches[i+1][0]
 		}
-		result = append(result, section{id: text[match[2]:match[3]], body: text[match[1]:end]})
+		s := section{body: text[match[1]:end]}
+		if match[2] >= 0 {
+			s.id = text[match[2]:match[3]]
+		} else {
+			s.id, s.shorthand = text[match[4]:match[5]], true
+		}
+		result = append(result, s)
 	}
 	return result
 }

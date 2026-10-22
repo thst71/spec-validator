@@ -1,4 +1,4 @@
-[#FR-2.1]
+[[FR-2.1]]
 === FR-2.1 Release binaries
 
 .Acceptance criteria

@@ -7,15 +7,20 @@ It checks that
 
 - master files and every `include::` target exist (nested includes resolve relative to the including file),
 - every `.adoc` file below a master's folder is reached by an include,
-- anchors (`[#FR-1.1]`) are unique and live in the folder of their kind,
+- anchors (`[[FR-1.1]]`) are unique and live in the folder of their kind; the shorthand `[#FR-1.1]` is rejected, because Asciidoctor reads the dot as a role and gives `FR-1.1` and `FR-1.2` the same id `FR-1`,
 - every reference (`<<FR-1.1>>`) resolves,
 - items trace to their parents: each TS references a requirement, each US a TS and a requirement.
 
 ## Usage
 
 ```sh
-spec-validator [-config <file>] [project-root]
+spec-validator [-config <file>] [project-root]              # validate
+spec-validator -fix [project-root]                          # rewrite [#ID] to [[ID]], then validate
+spec-validator -masters [project-root]                      # list the master files
+spec-validator -link <flattened-dir> [project-root]         # link references across masters
 ```
+
+`-masters` and `-link` serve the release pipeline: each master is flattened with `asciidoctor-reducer` into `<flattened-dir>`, `-link` turns references to items of another master into `xref:other-master.adoc#ID[ID]`, and Asciidoctor renders one HTML file per master whose links point to each other.
 
 | Exit code | Meaning |
 |---|---|

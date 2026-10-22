@@ -1,4 +1,4 @@
-== 0.1.0
+== 0.1.0 (unreleased)
 
 First version: the specification validator of wos-intel as a standalone Go binary.
 
@@ -8,5 +8,9 @@ First version: the specification validator of wos-intel as a standalone Go binar
   exit codes of the Python validator (<<US-1.1>>, <<FR-1.1>>, <<FR-1.2>>, <<FR-1.3>>,
   <<FR-1.4>>, <<FR-1.6>>).
 * Configurable layout in `.spec-validator.json` or `-config` (<<US-1.2>>, <<FR-1.5>>).
+* Anchors are written `+[[ID]]+`; the shorthand `+[#ID]+`, which Asciidoctor breaks at the dot,
+  is reported, and `-fix` rewrites it (<<US-1.3>>, <<FR-1.2>>, <<FR-1.7>>).
+* `-masters` and `-link` prepare the masters for rendering into HTML files that link each other
+  (<<US-1.4>>, <<FR-1.8>>).
 * Release binaries for macOS, Linux and Windows on amd64 and arm64 with checksums
   (<<US-2.1>>, <<FR-2.1>>).

@@ -34,6 +34,9 @@ func run(args []string, stdout, stderr io.Writer) int {
 	flags.SetOutput(stderr)
 	configPath := flags.String("config", "", "configuration file (default: <project-root>/"+spec.ConfigFile+" if it exists)")
 	showVersion := flags.Bool("version", false, "print the version and exit")
+	fix := flags.Bool("fix", false, "rewrite shorthand anchors [#ID] to [[ID]], then validate")
+	listMasters := flags.Bool("masters", false, "print the configured master files, one per line")
+	linkDir := flags.String("link", "", "in the flattened masters below `dir`, turn references to other masters into xrefs")
 	flags.Usage = func() {
 		_, _ = fmt.Fprintf(flags.Output(), "Usage: spec-validator [flags] [project-root]\n\nFlags:\n")
 		flags.PrintDefaults()
@@ -48,7 +51,13 @@ func run(args []string, stdout, stderr io.Writer) int {
 		_, _ = fmt.Fprintln(stdout, currentVersion())
 		return exitValid
 	}
-	if flags.NArg() > 1 {
+	modes := 0
+	for _, set := range []bool{*fix, *listMasters, *linkDir != ""} {
+		if set {
+			modes++
+		}
+	}
+	if flags.NArg() > 1 || modes > 1 {
 		flags.Usage()
 		return exitUsage
 	}
@@ -66,7 +75,32 @@ func run(args []string, stdout, stderr io.Writer) int {
 		_, _ = fmt.Fprintf(stderr, "spec-validator: %v\n", err)
 		return exitUsage
 	}
-	problems, err := spec.Validate(root, config)
+	var problems []string
+	switch {
+	case *listMasters:
+		for _, master := range spec.Masters(config) {
+			_, _ = fmt.Fprintln(stdout, master)
+		}
+		return exitValid
+	case *linkDir != "":
+		problems, err = spec.Link(root, config, *linkDir)
+		if err == nil && len(problems) == 0 {
+			_, _ = fmt.Fprintln(stdout, "references linked")
+			return exitValid
+		}
+	default:
+		if *fix {
+			var changed []string
+			if changed, err = spec.FixAnchors(root, config); err == nil {
+				for _, file := range changed {
+					_, _ = fmt.Fprintf(stdout, "fixed anchors in %s\n", file)
+				}
+			}
+		}
+		if err == nil {
+			problems, err = spec.Validate(root, config)
+		}
+	}
 	if err != nil {
 		_, _ = fmt.Fprintf(stderr, "spec-validator: %v\n", err)
 		return exitUsage

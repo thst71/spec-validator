@@ -5,3 +5,5 @@ include::TS-1.1-validation-pass.adoc[]
 include::TS-1.2-configuration.adoc[]
 
 include::TS-1.3-command-line.adoc[]
+
+include::TS-1.4-rewrites.adoc[]

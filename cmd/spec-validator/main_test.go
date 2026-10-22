@@ -36,7 +36,7 @@ func project(t *testing.T, content string) string {
 }
 
 func TestValidProject(t *testing.T) {
-	code, stdout, _ := execute(project(t, "[#R-1]\n=== One\n"))
+	code, stdout, _ := execute(project(t, "[[R-1]]\n=== One\n"))
 
 	if code != exitValid || !strings.Contains(stdout, "specifications are valid") {
 		t.Errorf("got %d, %q", code, stdout)
@@ -44,7 +44,7 @@ func TestValidProject(t *testing.T) {
 }
 
 func TestProblems(t *testing.T) {
-	code, _, stderr := execute(project(t, "[#R-1]\n=== One <<R-2>>\n"))
+	code, _, stderr := execute(project(t, "[[R-1]]\n=== One <<R-2>>\n"))
 
 	if code != exitProblems {
 		t.Errorf("want exit %d, got %d", exitProblems, code)
@@ -55,7 +55,7 @@ func TestProblems(t *testing.T) {
 }
 
 func TestExplicitConfig(t *testing.T) {
-	root := project(t, "[#R-1]\n=== One\n")
+	root := project(t, "[[R-1]]\n=== One\n")
 	writeFile(t, root, "other.json", `{"documents": [{"master": "missing.adoc", "folder": "req", "kinds": ["R"]}]}`)
 
 	code, _, stderr := execute("-config", filepath.Join(root, "other.json"), root)
@@ -66,7 +66,7 @@ func TestExplicitConfig(t *testing.T) {
 }
 
 func TestUsageErrors(t *testing.T) {
-	root := project(t, "[#R-1]\n=== One\n")
+	root := project(t, "[[R-1]]\n=== One\n")
 	writeFile(t, root, "broken.json", `{"documents": `)
 	cases := map[string][]string{
 		"two roots":      {root, root},
@@ -74,6 +74,8 @@ func TestUsageErrors(t *testing.T) {
 		"unknown flag":   {"-strict", root},
 		"broken config":  {"-config", filepath.Join(root, "broken.json"), root},
 		"missing config": {"-config", filepath.Join(root, "none.json"), root},
+		"two modes":      {"-fix", "-masters", root},
+		"missing link":   {"-link", filepath.Join(root, "none"), root},
 	}
 	for name, args := range cases {
 		t.Run(name, func(t *testing.T) {
@@ -89,5 +91,43 @@ func TestVersion(t *testing.T) {
 
 	if code != exitValid || strings.TrimSpace(stdout) == "" {
 		t.Errorf("got %d, %q", code, stdout)
+	}
+}
+
+func TestFix(t *testing.T) {
+	root := project(t, "[#R-1]\n=== One\n")
+
+	code, stdout, stderr := execute("-fix", root)
+
+	if code != exitValid || !strings.Contains(stdout, "fixed anchors in req/item.adoc") {
+		t.Errorf("got %d, %q, %q", code, stdout, stderr)
+	}
+}
+
+func TestMasters(t *testing.T) {
+	code, stdout, _ := execute("-masters", project(t, "[[R-1]]\n=== One\n"))
+
+	if code != exitValid || stdout != "req.adoc\n" {
+		t.Errorf("got %d, %q", code, stdout)
+	}
+}
+
+func TestLink(t *testing.T) {
+	root := project(t, "[[R-1]]\n=== One\n")
+	out := t.TempDir()
+	writeFile(t, out, "req.adoc", "[[R-1]]\n=== One <<R-1>>\n")
+
+	code, stdout, stderr := execute("-link", out, root)
+
+	if code != exitValid || !strings.Contains(stdout, "references linked") {
+		t.Errorf("got %d, %q, %q", code, stdout, stderr)
+	}
+}
+
+func TestLinkWithProblems(t *testing.T) {
+	root := project(t, "[[R-1]]\n=== One <<R-2>>\n")
+
+	if code, _, _ := execute("-link", t.TempDir(), root); code != exitProblems {
+		t.Errorf("want exit %d, got %d", exitProblems, code)
 	}
 }

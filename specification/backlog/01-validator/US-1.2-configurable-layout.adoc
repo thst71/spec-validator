@@ -1,4 +1,4 @@
-[#US-1.2]
+[[US-1.2]]
 === US-1.2 Configurable layout
 
 Status:: Done (0.1.0) +

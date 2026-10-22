@@ -26,12 +26,8 @@ archives:
       - README.md
 
 checksum:
-  name_template: checksums.txt
+  # publish-release of release-actions writes checksums.txt over all assets.
+  disable: true
 
 changelog:
-  use: github
-  filters:
-    exclude:
-      - "^docs"
-      - "^test"
-      - "^chore"
+  disable: true

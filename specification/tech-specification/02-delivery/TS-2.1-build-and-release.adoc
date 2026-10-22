@@ -8,8 +8,10 @@ Implements <<FR-2.1>>, <<NFR-1>> and <<NFR-2>>.
   `validate-specs` = `go run ./cmd/spec-validator` (from source: this repository cannot use
   the launcher that pins its own releases), `check` = all of them.
 * `.github/workflows/ci.yml`: the gate on ubuntu and macos, `go test ./...` on windows.
-* `.github/workflows/release.yml`: on a `v*` tag, GoReleaser v2 (`.goreleaser.yaml`) builds
-  with `-trimpath`, `CGO_ENABLED=0` and `-X main.version`, packs the archives with the license
-  files and writes `checksums.txt`.
+* `.github/workflows/release.yml`: the agent-skills release template with the go-task Release
+  Build. `verify`, `docs` (render-docs with `validator: go run ./cmd/spec-validator`) and
+  `publish` use release-actions, pinned by commit SHA. GoReleaser v2 (`.goreleaser.yaml`) only
+  builds: `-trimpath`, `CGO_ENABLED=0`, `-X main.version`, archives with the license files;
+  its own checksums and changelog are disabled.
 * The agent-skills library is vendored into `.agents/skills/` with `git subtree`; after a
   release, the library's launcher pin is raised to the new version and its checksums.

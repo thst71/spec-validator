@@ -2,10 +2,13 @@
 === FR-2.1 Release binaries
 
 .Acceptance criteria
-. A tag `v<semver>` publishes a GitHub release with archives for darwin, linux and windows on
-  amd64 and arm64, and a `checksums.txt` with their SHA-256 sums.
+. A release follows the agent-skills `release` skill: only an annotated tag `v<semver>` signed
+  by an allowed signer publishes a release.
+. The release holds archives for darwin, linux and windows on amd64 and arm64, every
+  specification master as one HTML file, `docs-<version>.zip` and a `checksums.txt` with the
+  SHA-256 sums of all of them.
 . Archive names follow `spec-validator_<version>_<os>_<arch>.tar.gz` (`.zip` for windows); the
   binary is at the archive root and reports the version with `-version`.
 
-Stakeholder need:: SPEC.md §1.4 +
+Stakeholder need:: SPEC.md §1.4, §1.7 +
 Effort:: 2 h

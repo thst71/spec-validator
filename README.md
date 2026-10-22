@@ -65,7 +65,7 @@ A traceability rule requires every item of `kind` to reference at least one item
 
 ## Development
 
-This repository follows the agent-skills workflow, vendored into `.agents/skills/`; see [AGENTS.md](AGENTS.md). The quality gate is `task check` ([go-task](https://taskfile.dev) and `golangci-lint` required). A tag `v<semver>` publishes the release.
+This repository follows the agent-skills workflow, vendored into `.agents/skills/`; see [AGENTS.md](AGENTS.md). The quality gate is `task check` ([go-task](https://taskfile.dev) and `golangci-lint` required). Releases come from signed tags as the agent-skills `release` skill describes; each release carries the binaries, the documentation as HTML and `checksums.txt`.
 
 ## License
 

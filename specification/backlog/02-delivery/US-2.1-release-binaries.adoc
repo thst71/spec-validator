@@ -6,11 +6,13 @@ Effort:: 3 h +
 Traces to:: <<TS-2.1>>, <<FR-2.1>>, <<NFR-2>>
 
 As a maintainer of the agent-skills library, I want checksummed release binaries for every
-platform, so that the library's launcher can pin and verify them.
+platform and the documentation of each version, so that the library's launcher can pin and
+verify them and readers find the matching documentation.
 
 .Acceptance criteria
 . `task check` passes locally and in CI.
-. Pushing the tag `v0.1.0` publishes the six archives and `checksums.txt`.
+. Pushing the signed tag `v0.1.0` publishes the six archives, the four HTML files, the docs
+  zip and `checksums.txt`; an unsigned tag publishes nothing.
 . The downloaded darwin/arm64 binary reports `0.1.0` with `-version`.
 
 .Test criteria

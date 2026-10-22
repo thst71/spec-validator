@@ -16,6 +16,7 @@ spec-validator checks modular AsciiDoc specifications (includes, anchors, refere
 | Fix a defect | [fix-bug](.agents/skills/fix-bug/SKILL.md) |
 | Done check | [definition-of-done](.agents/skills/definition-of-done/SKILL.md) |
 | Commit | [commit](.agents/skills/commit/SKILL.md) |
+| Release | [release](.agents/skills/release/SKILL.md) |
 | Commands, test tooling | [toolchain](.agents/skills/toolchain/SKILL.md) |
 | Specification layout and rules | [spec-system](.agents/skills/spec-system/SKILL.md) |
 
@@ -47,7 +48,7 @@ The contract tasks are defined in `Taskfile.yml`. Deviation from the profile: `v
 
 ### Releases
 
-A tag `v<semver>` runs GoReleaser in CI. After a release, raise the pin in agent-skills (`spec-system/bin/VERSION` and `checksums.txt`).
+Releases follow the [release](.agents/skills/release/SKILL.md) skill: a signed tag `v<semver>`, pushed by the user, runs `.github/workflows/release.yml`. After a release, raise the pin in agent-skills (`spec-system/bin/VERSION` and `checksums.txt` from the release).
 
 ### Commit Scopes
 

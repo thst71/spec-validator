@@ -1,0 +1,10 @@
+[#NFR-1]
+=== NFR-1 Portability
+
+.Acceptance criteria
+. Go standard library only, built with `CGO_ENABLED=0`: one static binary per platform.
+. Paths in messages are relative to the project root and slash-separated on every platform;
+  CRLF line endings are read like LF.
+
+Stakeholder need:: SPEC.md §1.1, §1.4 +
+Effort:: 0.5 h

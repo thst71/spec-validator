@@ -1,0 +1,11 @@
+= spec-validator – Requirements Specification
+:toc: left
+:toclevels: 3
+:sectnums:
+
+Functional and non-functional requirements of `spec-validator`, derived from `SPEC.md` (the
+stakeholder input).
+
+include::specification/requirements/01-validation/index.adoc[]
+
+include::specification/requirements/02-delivery/index.adoc[]

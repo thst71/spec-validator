@@ -1,0 +1,26 @@
+version: '3'
+
+tasks:
+  typecheck:
+    cmds:
+      - go build ./...
+  lint:
+    cmds:
+      - golangci-lint run
+  format-check:
+    cmds:
+      - test -z "$(gofmt -l cmd internal)" || { gofmt -l cmd internal; exit 1; }
+  test:
+    cmds:
+      - go test -race -cover ./...
+  validate-specs:
+    desc: Validates this repository's specification from source; the launcher would pin a release of itself.
+    cmds:
+      - go run ./cmd/spec-validator
+  check:
+    cmds:
+      - task: typecheck
+      - task: lint
+      - task: format-check
+      - task: test
+      - task: validate-specs

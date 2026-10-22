@@ -1,0 +1,9 @@
+== Delivery
+
+How the validator reaches the projects, and its quality.
+
+include::FR-2.1-release-binaries.adoc[]
+
+include::NFR-1-portability.adoc[]
+
+include::NFR-2-quality-gate.adoc[]

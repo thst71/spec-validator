@@ -1,0 +1,11 @@
+[#NFR-2]
+=== NFR-2 Quality gate
+
+.Acceptance criteria
+. `task check` runs the build, `golangci-lint`, the gofmt check, the tests with the race
+  detector and the validation of this repository's own specification; a change is done only
+  when it passes.
+. CI runs the gate on Linux and macOS and the tests on Windows for every push.
+
+Stakeholder need:: SPEC.md §1.4 +
+Effort:: 1 h

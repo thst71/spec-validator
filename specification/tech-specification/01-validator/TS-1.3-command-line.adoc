@@ -1,0 +1,12 @@
+[#TS-1.3]
+=== TS-1.3 Command line
+
+Implements <<FR-1.6>>.
+
+* `cmd/spec-validator`, `run(args, stdout, stderr) int` behind `main` for in-process tests;
+  flags with the standard `flag` package (`-config`, `-version`, `-h`).
+* Configuration: `-config` if given, else `<root>/.spec-validator.json` if it exists, else
+  `DefaultConfig`.
+* `version` is set by the release build (`-X main.version`); otherwise the module version of
+  `go install …@vX`, else `dev`.
+* Exit codes: 0 valid, 1 problems, 2 usage, configuration or read errors.

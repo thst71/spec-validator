@@ -1,0 +1,12 @@
+[#FR-1.4]
+=== FR-1.4 Traceability
+
+.Acceptance criteria
+. A traceability rule requires every item of a kind to reference at least one item of a set of
+  kinds within its section (the text up to the next anchor).
+. A violation is reported as `<file>: <ID> references no <name>`, with the rule's name.
+. Default rules: TS → FR or NFR ("requirement"); US → FR or NFR ("requirement");
+  US → TS ("technical specification").
+
+Stakeholder need:: SPEC.md §1.2 +
+Effort:: 1 h

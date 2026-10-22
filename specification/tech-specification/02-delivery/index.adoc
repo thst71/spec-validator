@@ -1,0 +1,3 @@
+== Delivery
+
+include::TS-2.1-build-and-release.adoc[]

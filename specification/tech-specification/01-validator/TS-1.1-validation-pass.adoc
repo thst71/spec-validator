@@ -1,0 +1,18 @@
+[#TS-1.1]
+=== TS-1.1 Validation pass
+
+Implements <<FR-1.1>>, <<FR-1.2>>, <<FR-1.3>>, <<FR-1.4>> and <<NFR-1>>.
+
+* Package `internal/spec`, entry `Validate(root string, config Config) ([]string, error)`: the
+  problems in report order; the error only for unreadable files.
+* Regular expressions, the ID part built from the configured kinds
+  (`(?:FR|NFR|TS|US)-\d+(?:\.\d+)*`): include `(?m)^include::([^\[]+)\[`, anchor
+  `(?m)^\[#(ID)\]\s*$`, reference `<<(ID)(?:,[^>]*)?>>`.
+* Per document in configuration order: check the master, follow includes depth-first
+  (targets resolved against the including file's directory, symlinks evaluated, each file
+  once), then walk the folder's `.adoc` files in lexical order: inclusion, anchors (first
+  definition wins, a duplicate is skipped), sections (text from an anchor to the next).
+* Then references per file (distinct IDs, sorted) and traceability per section in definition
+  order, rules in configuration order.
+* Files are read with CRLF normalised to LF; reported paths are `filepath.Rel` to the root
+  with forward slashes.

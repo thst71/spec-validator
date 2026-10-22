@@ -1,0 +1,18 @@
+[#US-2.1]
+=== US-2.1 Release binaries and quality gate
+
+Status:: Done (0.1.0) +
+Effort:: 3 h +
+Traces to:: <<TS-2.1>>, <<FR-2.1>>, <<NFR-2>>
+
+As a maintainer of the agent-skills library, I want checksummed release binaries for every
+platform, so that the library's launcher can pin and verify them.
+
+.Acceptance criteria
+. `task check` passes locally and in CI.
+. Pushing the tag `v0.1.0` publishes the six archives and `checksums.txt`.
+. The downloaded darwin/arm64 binary reports `0.1.0` with `-version`.
+
+.Test criteria
+* Blackbox test (manual, per release): download an archive, verify its checksum, run
+  `-version` and validate wos-intel.

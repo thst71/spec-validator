@@ -1,0 +1,15 @@
+== Validation
+
+What the validator checks and how it is called.
+
+include::FR-1.1-include-structure.adoc[]
+
+include::FR-1.2-anchors.adoc[]
+
+include::FR-1.3-references.adoc[]
+
+include::FR-1.4-traceability.adoc[]
+
+include::FR-1.5-configuration.adoc[]
+
+include::FR-1.6-command-line.adoc[]

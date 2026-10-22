@@ -1,0 +1,21 @@
+[#TS-1.2]
+=== TS-1.2 Configuration
+
+Implements <<FR-1.5>>.
+
+[source,json]
+----
+{
+  "documents": [
+    {"master": "specification-web.adoc", "folder": "specification/requirements", "kinds": ["FR", "NFR"]}
+  ],
+  "traceability": [
+    {"kind": "TS", "requires": ["FR", "NFR"], "name": "requirement"}
+  ]
+}
+----
+
+* `LoadConfig` decodes with `DisallowUnknownFields` and checks: at least one document, master
+  and folder set, kinds match `^[A-Z][A-Z0-9]*$` and are defined by one document only, rules
+  name known kinds and carry `requires` and `name`.
+* `DefaultConfig` returns the layout of the `spec-system` skill (four documents, three rules).

@@ -1,0 +1,13 @@
+[#FR-1.1]
+=== FR-1.1 Include structure
+
+.Acceptance criteria
+. A missing master file is reported as `<master>: master file is missing`.
+. Every `include::` target of a master and of every file it includes, nested, must exist; a
+  target is resolved relative to the including file. A missing one is reported as
+  `<file>: include target not found: <target>`.
+. Every `.adoc` file below a master's folder must be reached by an include of that master;
+  otherwise `<file>: not included by <master>`.
+
+Stakeholder need:: SPEC.md §1.2 +
+Effort:: 2 h

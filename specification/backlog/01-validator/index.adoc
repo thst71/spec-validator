@@ -1,0 +1,5 @@
+== Validator
+
+include::US-1.1-port-the-checks.adoc[]
+
+include::US-1.2-configurable-layout.adoc[]

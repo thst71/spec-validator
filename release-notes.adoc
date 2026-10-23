@@ -1,5 +1,6 @@
 = spec-validator – Release Notes
 :toc: left
-:sectnums:
+
+include::specification/release-notes/0.1.1.adoc[]
 
 include::specification/release-notes/0.1.0.adoc[]

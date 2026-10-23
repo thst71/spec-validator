@@ -13,5 +13,5 @@ Implements <<FR-2.1>>, <<NFR-1>> and <<NFR-2>>.
   `publish` use release-actions, pinned by commit SHA. GoReleaser v2 (`.goreleaser.yaml`) only
   builds: `-trimpath`, `CGO_ENABLED=0`, `-X main.version`, archives with the license files;
   its own checksums and changelog are disabled.
-* The agent-skills library is vendored into `.agents/skills/` with `git subtree`; after a
+* The agent-skills library is vendored into `.agents/skills/` with its `vendor.sh`; after a
   release, the library's launcher pin is raised to the new version and its checksums.

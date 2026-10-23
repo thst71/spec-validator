@@ -48,7 +48,7 @@ The contract tasks are defined in `Taskfile.yml`. Deviation from the profile: `v
 
 ### Releases
 
-Releases follow the [release](.agents/skills/release/SKILL.md) skill: a signed tag `v<semver>`, pushed by the user, runs `.github/workflows/release.yml`. After a release, raise the pin in agent-skills (`spec-system/bin/VERSION` and `checksums.txt` from the release).
+Releases follow the [release](.agents/skills/release/SKILL.md) skill: a signed tag `v<semver>`, pushed by the user, runs `.github/workflows/release.yml`. After a release with a `feat` or `fix` that the library needs, raise the pin in agent-skills (`spec-system/bin/VERSION` and `checksums.txt` from the release); a release with only `docs` or `chore` changes leaves the pin as it is. Vendoring a new agent-skills version calls for no release of its own; it ships with the next one.
 
 ### Commit Scopes
 

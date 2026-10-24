@@ -26,8 +26,10 @@ Implements <<FR-3.4>> and <<FR-3.5>>.
 
 ==== Traceability report (`trace.go`)
 * Header like the test report, `= Traceability Report`.
-* Sections "Requirements to tests" (each FR/NFR of the documents with its scenarios as
-  `<<AT-x.y>>`, results if `-results` is given), "Tests to requirements", "Orphaned tests",
-  "Uncovered requirements" and a summary.
+* Summary, then "Requirements to Tests" (every item of a kind the tests trace to, in document
+  order, with its scenarios and, with `-results`, their results), "Tests to Requirements",
+  "Orphaned Tests", "Uncovered Requirements" and, if any, "Problems in Test Files".
+* `analyze` keeps the problems of test files apart (`testProblems`) and returns the anchored
+  items in document order, so that the report can refuse document problems only.
 * References to `AT` IDs are written only when the test report master exists, else as plain
   text, so that the traceability report renders on its own.

@@ -10,8 +10,10 @@
   requirements (no scenario traces to them) are listed in their own sections; an empty
   section says "none".
 . A summary gives the number of requirements, covered requirements and orphaned scenarios.
-. The report is written even when it finds orphaned scenarios or uncovered requirements; the
-  exit code is 0. A rule that fails on them is left to a later version.
+. The report is written even when it finds orphaned scenarios, uncovered requirements or other
+  problems in feature files, which it lists in a section of their own; the exit code is 0. A
+  rule that fails on them is left to a later version.
+. Problems in the AsciiDoc documents leave the report unwritten (exit 1).
 
 Stakeholder need:: SPEC.md §1.11 +
 Effort:: 3 h

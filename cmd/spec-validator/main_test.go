@@ -199,3 +199,28 @@ func TestTestReportErrors(t *testing.T) {
 		t.Errorf("two modes: want exit %d, got %d", exitUsage, code)
 	}
 }
+
+func TestTraceReport(t *testing.T) {
+	root := bdtProject(t, "Feature: One\n  @AT-1 @FR-1\n  Scenario: S\n    Then ok\n\n  @AT-2\n  Scenario: Orphan\n    Then ok\n")
+	writeFile(t, root, "results.json", results)
+
+	code, stdout, stderr := execute("-trace-report", "-results", filepath.Join(root, "results.json"), root)
+
+	if code != exitValid || !strings.Contains(stdout, "traceability report written") {
+		t.Fatalf("got %d, %q, %q", code, stdout, stderr)
+	}
+	report, err := os.ReadFile(filepath.Join(root, "traceability-report.adoc"))
+	if err != nil || !strings.Contains(string(report), "| <<FR-1>> | AT-1 (failed)") || !strings.Contains(string(report), "== Orphaned Tests\n\n* AT-2 (not run)") {
+		t.Errorf("report %s, %v", report, err)
+	}
+
+	if code, _, _ := execute("-trace-report", root); code != exitValid {
+		t.Errorf("without results: want exit %d, got %d", exitValid, code)
+	}
+	if code, _, _ := execute("-results", "r.json", root); code != exitUsage {
+		t.Errorf("-results alone: want exit %d, got %d", exitUsage, code)
+	}
+	if code, _, _ := execute("-trace-report", "-results", filepath.Join(root, "missing.json"), root); code != exitUsage {
+		t.Errorf("missing results: want exit %d, got %d", exitUsage, code)
+	}
+}

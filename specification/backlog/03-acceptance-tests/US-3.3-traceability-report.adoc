@@ -1,7 +1,7 @@
 [[US-3.3]]
 === US-3.3 Traceability report
 
-Status:: Open +
+Status:: Done (0.2.0) +
 Effort:: 3 h +
 Traces to:: <<TS-3.4>>, <<TS-3.5>>, <<FR-3.5>>
 
@@ -25,5 +25,6 @@ tests cover, so that orphaned tests and uncovered requirements are visible.
   two requirements, a requirement covered twice.
 * Component test: `run -trace-report` with and without `-results`, `-results` without
   `-trace-report` (exit 2).
-* Integration test: golden file; rendering as in <<US-3.2>>.
+* Integration test: golden file (`testdata/traceability-report.adoc`); rendering in the render
+  chain test of <<US-3.4>>.
 * Blackbox test: none; see <<US-3.1>>.

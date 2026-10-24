@@ -39,6 +39,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 	listMasters := flags.Bool("masters", false, "print the configured master files, one per line")
 	linkDir := flags.String("link", "", "in the flattened masters below `dir`, turn references to other masters into xrefs")
 	testReport := flags.String("test-report", "", "write the test report master from the Cucumber JSON `results`")
+	traceReport := flags.Bool("trace-report", false, "write the traceability report master")
+	results := flags.String("results", "", "with -trace-report: show the results of the Cucumber JSON `file`")
 	flags.Usage = func() {
 		_, _ = fmt.Fprintf(flags.Output(), "Usage: spec-validator [flags] [project-root]\n\nFlags:\n")
 		flags.PrintDefaults()
@@ -54,12 +56,12 @@ func run(args []string, stdout, stderr io.Writer) int {
 		return exitValid
 	}
 	modes := 0
-	for _, set := range []bool{*fix, *listMasters, *linkDir != "", *testReport != ""} {
+	for _, set := range []bool{*fix, *listMasters, *linkDir != "", *testReport != "", *traceReport} {
 		if set {
 			modes++
 		}
 	}
-	if flags.NArg() > 1 || modes > 1 {
+	if flags.NArg() > 1 || modes > 1 || (*results != "" && !*traceReport) {
 		flags.Usage()
 		return exitUsage
 	}
@@ -88,6 +90,12 @@ func run(args []string, stdout, stderr io.Writer) int {
 		problems, err = spec.Link(root, config, *linkDir)
 		if err == nil && len(problems) == 0 {
 			_, _ = fmt.Fprintln(stdout, "references linked")
+			return exitValid
+		}
+	case *traceReport:
+		problems, err = spec.TraceReport(root, config, *results, time.Now().Format(time.DateOnly))
+		if err == nil && len(problems) == 0 {
+			_, _ = fmt.Fprintln(stdout, "traceability report written")
 			return exitValid
 		}
 	case *testReport != "":

@@ -19,6 +19,7 @@ spec-validator -fix [project-root]                          # rewrite [#ID] to [
 spec-validator -masters [project-root]                      # list the master files
 spec-validator -link <flattened-dir> [project-root]         # link references across masters
 spec-validator -test-report <results.json> [project-root]   # write the test report master
+spec-validator -trace-report [-results <results.json>] [project-root]  # write the traceability report
 ```
 
 `-masters` and `-link` serve the release pipeline: each master is flattened with `asciidoctor-reducer` into `<flattened-dir>`, `-link` turns references to items of another master into `xref:other-master.adoc#ID[ID]`, and Asciidoctor renders one HTML file per master whose links point to each other.
@@ -92,6 +93,13 @@ scenario with its anchor, traces, steps and result (`passed`, `failed` with the 
 are matched to scenarios by their test ID tag; results without one are listed separately. The
 report shows `{revnumber}`, which the release pipeline sets when it renders the masters. It is
 written only for a valid specification (exit 1 otherwise); an unreadable results file is exit 2.
+
+`-trace-report` writes `traceability-report.adoc`: every FR and NFR with the scenarios covering
+it, every scenario with its requirements, orphaned scenarios (no trace to a requirement) and
+uncovered requirements, plus the problems found in feature files. `-results results.json` adds
+the result of every scenario. Orphans and uncovered requirements do not fail the run (exit 0);
+problems in the AsciiDoc documents do (exit 1). Scenario IDs become links when the test report
+exists.
 
 ## Development
 

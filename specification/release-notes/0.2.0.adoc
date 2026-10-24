@@ -10,6 +10,9 @@ Built with agent-skills v0.4.0.
   `tests` (<<US-3.1>>, <<FR-3.1>>, <<FR-3.2>>, <<FR-3.3>>).
 * `-test-report results.json` writes the test report master from the Cucumber JSON of a test
   run (<<US-3.2>>, <<FR-3.4>>).
+* `-trace-report` writes the traceability report: requirements to tests, tests to
+  requirements, orphaned tests and uncovered requirements; `-results` adds the results
+  (<<US-3.3>>, <<FR-3.5>>).
 
 === Documentation
 

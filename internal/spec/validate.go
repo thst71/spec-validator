@@ -62,9 +62,16 @@ type validator struct {
 // result is a validation pass: the problems, for the links the master defining each ID, and
 // the tests found in test files.
 type result struct {
-	problems []string
-	masterOf map[string]string
-	tests    []testCase
+	problems     []string // all problems, those of test files last
+	testProblems []string // the problems found in test files
+	masterOf     map[string]string
+	items        []item // the anchored items of the documents, in document order
+	tests        []testCase
+}
+
+// item is an anchored section of a document.
+type item struct {
+	id string
 }
 
 // Validate returns all problems found below root; an empty list means the specification is
@@ -165,7 +172,17 @@ func analyze(root string, config Config) (result, error) {
 			}
 		}
 	}
-	return result{problems: append(v.problems, testProblems...), masterOf: masterOf, tests: tests}, nil
+	items := make([]item, len(sections))
+	for i, s := range sections {
+		items[i] = item{id: s.id}
+	}
+	return result{
+		problems:     append(v.problems, testProblems...),
+		testProblems: testProblems,
+		masterOf:     masterOf,
+		items:        items,
+		tests:        tests,
+	}, nil
 }
 
 func (v *validator) report(format string, args ...any) {

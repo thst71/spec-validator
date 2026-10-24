@@ -1,0 +1,10 @@
+== Release v0.1.2 (unreleased)
+
+Built with agent-skills v0.2.0.
+
+=== Documentation
+
+* The archive names, the archive layout, `checksums.txt` and the `-version` output are the
+  interface the agent-skills launcher pins releases by; changing one of them is a major release
+  (<<FR-2.1>>). Projects pin a release in their own `.agents/spec-validator.lock` (agent-skills
+  v0.4.0 or later), so a release no longer changes the library.

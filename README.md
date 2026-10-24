@@ -28,7 +28,7 @@ spec-validator -link <flattened-dir> [project-root]         # link references ac
 | 1 | problems, one per line on stderr, then `<n> problem(s) found` |
 | 2 | usage, configuration or read error |
 
-In projects using agent-skills, run it through the launcher `.agents/skills/spec-system/bin/validate-specs`: it downloads the pinned release once, verifies its checksum and runs it.
+In projects using agent-skills, run it through the launcher `.agents/skills/spec-system/bin/validate-specs`: it runs the release the project pins in `.agents/spec-validator.lock` (an installed `spec-validator` of that version, or the release downloaded once and verified against the lock). `validate-specs --update [v<version>]` pins a release (agent-skills v0.4.0 or later).
 
 ## Installation
 

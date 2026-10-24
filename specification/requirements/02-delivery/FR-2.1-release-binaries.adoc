@@ -9,6 +9,9 @@
   SHA-256 sums of all of them.
 . Archive names follow `spec-validator_<version>_<os>_<arch>.tar.gz` (`.zip` for windows); the
   binary is at the archive root and reports the version with `-version`.
+. The archive names, the binary at the archive root, `checksums.txt` and the `-version` output
+  (the version, optionally prefixed with `v`) are the interface the agent-skills launcher
+  pins and verifies releases by; a release that changes one of them raises the major version.
 
 Stakeholder need:: SPEC.md §1.4, §1.7 +
 Effort:: 2 h

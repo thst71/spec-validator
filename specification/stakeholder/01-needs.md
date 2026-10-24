@@ -7,8 +7,8 @@
    traceability (TS → requirement, US → TS and requirement).
 3. The layout (master files, folders, anchor kinds, traceability rules) can differ per project;
    without configuration, the layout of the `spec-system` skill applies.
-4. Released binaries for macOS and Linux (amd64, arm64); Windows is nice to have. The
-   agent-skills library pins a release and starts it through a launcher.
+4. Released binaries for macOS and Linux (amd64, arm64); Windows is nice to have. Each
+   project pins a release; the launcher of the agent-skills library verifies and starts it.
 5. Public, LGPL-3.0-only.
 6. Asciidoctor reads `[#FR-1.2]` as the id `FR-1` with the role `2`, so all items `FR-1.x`
    share one id in the rendered documents. Anchors are written `[[FR-1.2]]`; the validator

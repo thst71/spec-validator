@@ -38,7 +38,7 @@ spec-validator checks modular AsciiDoc specifications (includes, anchors, refere
 |---|---|
 | `.` (`cmd/`, `internal/`) | [go-task](.agents/skills/toolchain/go-task/PROFILE.md) |
 
-The contract tasks are defined in `Taskfile.yml`. Deviation from the profile: `validate-specs` runs this repository's validator from source (`go run ./cmd/spec-validator`), not the library's launcher, which pins a release of this very tool.
+The contract tasks are defined in `Taskfile.yml`. Deviation from the profile: `validate-specs` runs this repository's validator from source (`go run ./cmd/spec-validator`), not the library's launcher, which would run a pinned release of this very tool.
 
 ### Test Pyramid Limits
 
@@ -48,7 +48,7 @@ The contract tasks are defined in `Taskfile.yml`. Deviation from the profile: `v
 
 ### Releases
 
-Releases follow the [release](.agents/skills/release/SKILL.md) skill: a signed tag `v<semver>`, pushed by the user, runs `.github/workflows/release.yml`. After a release with a `feat` or `fix` that the library needs, raise the pin in agent-skills (`spec-system/bin/VERSION` and `checksums.txt` from the release); a release with only `docs` or `chore` changes leaves the pin as it is. Vendoring a new agent-skills version calls for no release of its own; it ships with the next one.
+Releases follow the [release](.agents/skills/release/SKILL.md) skill: a signed tag `v<semver>`, pushed by the user, runs `.github/workflows/release.yml`. A release changes nothing in agent-skills: each project pins a validator release in its `.agents/spec-validator.lock` and raises it with `validate-specs --update`. The archive names, the archive layout, `checksums.txt` and the `-version` output are the interface of that launcher (FR-2.1); changing one of them is a major release. Vendoring a new agent-skills version calls for no release of its own; it ships with the next one.
 
 ### Commit Scopes
 

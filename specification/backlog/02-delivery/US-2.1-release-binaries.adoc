@@ -6,8 +6,8 @@ Effort:: 3 h +
 Traces to:: <<TS-2.1>>, <<FR-2.1>>, <<NFR-2>>
 
 As a maintainer of the agent-skills library, I want checksummed release binaries for every
-platform and the documentation of each version, so that the library's launcher can pin and
-verify them and readers find the matching documentation.
+platform and the documentation of each version, so that projects can pin and verify them
+through the library's launcher and readers find the matching documentation.
 
 .Acceptance criteria
 . `task check` passes locally and in CI.
@@ -17,4 +17,6 @@ verify them and readers find the matching documentation.
 
 .Test criteria
 * Blackbox test (manual, per release): download an archive, verify its checksum, run
-  `-version` and validate wos-intel.
+  `-version` and validate wos-intel; in a project with agent-skills v0.4.0 or later,
+  `.agents/skills/spec-system/bin/validate-specs --update v<version>` pins the release and
+  `validate-specs` runs it.

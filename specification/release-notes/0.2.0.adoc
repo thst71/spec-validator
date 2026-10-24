@@ -8,6 +8,8 @@ Built with agent-skills v0.4.0.
   (`AT`, format `gherkin`, tracing to FR and NFR); every scenario has one unique test ID, its
   trace tags resolve to requirements, and `+<<AT-x.y>>+` resolves in AsciiDoc. Off without
   `tests` (<<US-3.1>>, <<FR-3.1>>, <<FR-3.2>>, <<FR-3.3>>).
+* `-test-report results.json` writes the test report master from the Cucumber JSON of a test
+  run (<<US-3.2>>, <<FR-3.4>>).
 
 === Documentation
 

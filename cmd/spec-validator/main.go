@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime/debug"
+	"time"
 
 	"github.com/thst71/spec-validator/internal/spec"
 )
@@ -37,6 +38,7 @@ func run(args []string, stdout, stderr io.Writer) int {
 	fix := flags.Bool("fix", false, "rewrite shorthand anchors [#ID] to [[ID]], then validate")
 	listMasters := flags.Bool("masters", false, "print the configured master files, one per line")
 	linkDir := flags.String("link", "", "in the flattened masters below `dir`, turn references to other masters into xrefs")
+	testReport := flags.String("test-report", "", "write the test report master from the Cucumber JSON `results`")
 	flags.Usage = func() {
 		_, _ = fmt.Fprintf(flags.Output(), "Usage: spec-validator [flags] [project-root]\n\nFlags:\n")
 		flags.PrintDefaults()
@@ -52,7 +54,7 @@ func run(args []string, stdout, stderr io.Writer) int {
 		return exitValid
 	}
 	modes := 0
-	for _, set := range []bool{*fix, *listMasters, *linkDir != ""} {
+	for _, set := range []bool{*fix, *listMasters, *linkDir != "", *testReport != ""} {
 		if set {
 			modes++
 		}
@@ -86,6 +88,12 @@ func run(args []string, stdout, stderr io.Writer) int {
 		problems, err = spec.Link(root, config, *linkDir)
 		if err == nil && len(problems) == 0 {
 			_, _ = fmt.Fprintln(stdout, "references linked")
+			return exitValid
+		}
+	case *testReport != "":
+		problems, err = spec.TestReport(root, config, *testReport, time.Now().Format(time.DateOnly))
+		if err == nil && len(problems) == 0 {
+			_, _ = fmt.Fprintln(stdout, "test report written")
 			return exitValid
 		}
 	default:

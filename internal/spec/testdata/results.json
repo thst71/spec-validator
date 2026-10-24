@@ -1,0 +1,22 @@
+[
+  {
+    "uri": "specification/acceptance/greeting.feature",
+    "name": "Greeting",
+    "elements": [
+      {"type": "background", "name": "", "line": 3, "keyword": "Background", "tags": [],
+       "steps": [{"keyword": "Given ", "name": "a running app", "result": {"status": "passed"}}]},
+      {"type": "scenario", "name": "Greet", "line": 6, "keyword": "Scenario",
+       "tags": [{"name": "@FR-1.1"}, {"name": "@AT-1.1"}],
+       "steps": [{"keyword": "Then ", "name": "I see \"Hello *world* <<x>> ] {attr}\"", "result": {"status": "passed"}}]},
+      {"type": "scenario", "name": "Greet <name>", "line": 14, "keyword": "Scenario Outline",
+       "tags": [{"name": "@FR-1.1"}, {"name": "@AT-1.2"}],
+       "steps": [{"keyword": "Then ", "name": "I see Alice", "result": {"status": "passed"}}]},
+      {"type": "scenario", "name": "Greet <name>", "line": 15, "keyword": "Scenario Outline",
+       "tags": [{"name": "@FR-1.1"}, {"name": "@AT-1.2"}],
+       "steps": [{"keyword": "Then ", "name": "I see Bob", "result": {"status": "failed", "error_message": "expected Bob\n....\ngot nothing"}}]},
+      {"type": "scenario", "name": "Stray", "line": 20, "keyword": "Scenario",
+       "tags": [{"name": "@wip"}],
+       "steps": [{"keyword": "Then ", "name": "x", "result": {"status": "undefined"}}]}
+    ]
+  }
+]

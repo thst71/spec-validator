@@ -164,3 +164,38 @@ func TestFeatureFiles(t *testing.T) {
 		t.Errorf("want exit %d, got %d", exitProblems, code)
 	}
 }
+
+const results = `[{"uri": "acceptance/one.feature", "name": "One", "elements": [
+ {"type": "scenario", "name": "S", "line": 3, "tags": [{"name": "@AT-1"}],
+  "steps": [{"keyword": "Then ", "name": "ok", "result": {"status": "failed"}}]}]}]`
+
+func TestTestReport(t *testing.T) {
+	root := bdtProject(t, "@FR-1\nFeature: One\n  @AT-1\n  Scenario: S\n    Then ok\n")
+	writeFile(t, root, "results.json", results)
+
+	code, stdout, stderr := execute("-test-report", filepath.Join(root, "results.json"), root)
+
+	if code != exitValid || !strings.Contains(stdout, "test report written") {
+		t.Fatalf("got %d, %q, %q", code, stdout, stderr)
+	}
+	report, err := os.ReadFile(filepath.Join(root, "test-report.adoc"))
+	if err != nil || !strings.Contains(string(report), "Result:: failed") {
+		t.Errorf("report %q, %v", report, err)
+	}
+}
+
+func TestTestReportErrors(t *testing.T) {
+	root := bdtProject(t, "@FR-1\nFeature: One\n  @AT-1\n  Scenario: S\n    Then ok\n")
+	if code, _, _ := execute("-test-report", filepath.Join(root, "missing.json"), root); code != exitUsage {
+		t.Errorf("missing results: want exit %d, got %d", exitUsage, code)
+	}
+
+	invalid := bdtProject(t, "Feature: One\n  Scenario: S\n    Then ok\n")
+	writeFile(t, invalid, "results.json", results)
+	if code, _, _ := execute("-test-report", filepath.Join(invalid, "results.json"), invalid); code != exitProblems {
+		t.Errorf("invalid specification: want exit %d, got %d", exitProblems, code)
+	}
+	if code, _, _ := execute("-test-report", "r.json", "-masters", root); code != exitUsage {
+		t.Errorf("two modes: want exit %d, got %d", exitUsage, code)
+	}
+}

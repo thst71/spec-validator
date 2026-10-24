@@ -18,6 +18,7 @@ spec-validator [-config <file>] [project-root]              # validate
 spec-validator -fix [project-root]                          # rewrite [#ID] to [[ID]], then validate
 spec-validator -masters [project-root]                      # list the master files
 spec-validator -link <flattened-dir> [project-root]         # link references across masters
+spec-validator -test-report <results.json> [project-root]   # write the test report master
 ```
 
 `-masters` and `-link` serve the release pipeline: each master is flattened with `asciidoctor-reducer` into `<flattened-dir>`, `-link` turns references to items of another master into `xref:other-master.adoc#ID[ID]`, and Asciidoctor renders one HTML file per master whose links point to each other.
@@ -83,6 +84,14 @@ Every `.feature` file below the folder is checked (feature files are in English)
 - `<<AT-2.1>>` in AsciiDoc resolves to the scenario.
 
 Without `tests`, feature files are not read.
+
+`-test-report results.json` turns the Cucumber JSON of a test run (cucumber-js, playwright-bdd,
+pytest-bdd and others write it) into `test-report.adoc`: a summary, then per feature file every
+scenario with its anchor, traces, steps and result (`passed`, `failed` with the error message,
+`skipped`, `pending`, `undefined`, `not run`; one block per example row of an outline). Results
+are matched to scenarios by their test ID tag; results without one are listed separately. The
+report shows `{revnumber}`, which the release pipeline sets when it renders the masters. It is
+written only for a valid specification (exit 1 otherwise); an unreadable results file is exit 2.
 
 ## Development
 

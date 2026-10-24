@@ -1,7 +1,7 @@
 [[US-3.2]]
 === US-3.2 Test report
 
-Status:: Open +
+Status:: Done (0.2.0) +
 Effort:: 4 h +
 Traces to:: <<TS-3.4>>, <<TS-3.5>>, <<FR-3.4>>
 
@@ -27,7 +27,7 @@ tests as a document, so that I can check which scenarios passed without reading 
   matching by test ID; escaping of hostile texts.
 * Component test: `run -test-report` with a fixture result file, an unreadable file (exit 2),
   an invalid specification (exit 1).
-* Integration test: golden file of the fixture report; rendering it in the
-  `asciidoctor/docker-asciidoctor` image with `--failure-level INFO` (Docker, as in
-  release-actions; skipped when Docker is missing).
+* Integration test: golden file of the fixture report (`testdata/test-report.adoc`); its
+  rendering with `--failure-level INFO` is part of the render chain test of <<US-3.4>>, as the
+  report links to the requirements master.
 * Blackbox test: none; see <<US-3.1>>.

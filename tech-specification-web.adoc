@@ -8,3 +8,5 @@ Design of `spec-validator`; every item traces to the requirements.
 include::specification/tech-specification/01-validator/index.adoc[]
 
 include::specification/tech-specification/02-delivery/index.adoc[]
+
+include::specification/tech-specification/03-acceptance-tests/index.adoc[]

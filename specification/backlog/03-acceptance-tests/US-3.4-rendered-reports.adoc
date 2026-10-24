@@ -1,0 +1,26 @@
+[[US-3.4]]
+=== US-3.4 Rendered reports
+
+Status:: Open +
+Effort:: 2 h +
+Traces to:: <<TS-3.5>>, <<FR-3.6>>
+
+As the release pipeline, I want the reports rendered like the other masters, so that the
+release documentation links requirements, scenarios and results.
+
+.Acceptance criteria
+. `-masters` lists existing report masters after the configured ones.
+. `-link` rewrites references between the reports and the other masters.
+. The render chain of release-actions (`asciidoctor-reducer`, `-link`, `asciidoctor
+  --failure-level INFO`) renders a fixture with both reports and a story referencing an AT.
+
+.Technical tasks
+. `Masters` and `analyze` know the report masters.
+. Tests below.
+
+.Test criteria
+* Unit test: `Masters` with and without report files; `Link` with references from the
+  requirements to `AT` and from the reports to FR.
+* Component test: `-masters` on the fixture.
+* Integration test: the render chain on the fixture in Docker (skipped without Docker).
+* Blackbox test: none; see <<US-3.1>>.

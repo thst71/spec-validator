@@ -1,0 +1,19 @@
+[[FR-3.4]]
+=== FR-3.4 Test report
+
+.Acceptance criteria
+. `-test-report <results.json>` reads the Cucumber JSON of a test run and writes the test report
+  master (FR-3.1) in the project root.
+. The report lists per feature file every scenario with its anchor `[[AT-x.y]]`, name, traces as
+  references, its steps and the result: `passed`, `failed` (with the error message), `skipped`,
+  `pending`, `undefined` or `not run`. A scenario outline shows one result per example row; its
+  result is the worst of them.
+. A summary table counts the scenarios per result; the document shows the version given at
+  rendering (`revnumber`) and the date the report was written.
+. A result whose scenario carries no known test ID is listed under "Results without scenario".
+. The report renders with Asciidoctor without warnings, whatever the step texts contain.
+. Exit code 0 when the report is written, whatever the results; 2 for an unreadable results
+  file or an invalid specification.
+
+Stakeholder need:: SPEC.md §1.10 +
+Effort:: 4 h

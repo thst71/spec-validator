@@ -1,0 +1,17 @@
+[[FR-3.5]]
+=== FR-3.5 Traceability report
+
+.Acceptance criteria
+. `-trace-report` writes the traceability report master (FR-3.1) in the project root.
+. Top-down: every FR and NFR with the scenarios covering it; with `-results <results.json>`,
+  each with its result (FR-3.4).
+. Bottom-up: every scenario with the requirements it traces to.
+. Orphaned scenarios (none of whose traces resolves to a requirement) and uncovered
+  requirements (no scenario traces to them) are listed in their own sections; an empty
+  section says "none".
+. A summary gives the number of requirements, covered requirements and orphaned scenarios.
+. The report is written even when it finds orphaned scenarios or uncovered requirements; the
+  exit code is 0. A rule that fails on them is left to a later version.
+
+Stakeholder need:: SPEC.md §1.11 +
+Effort:: 3 h

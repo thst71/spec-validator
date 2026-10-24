@@ -1,0 +1,16 @@
+== Acceptance Tests
+
+Requirements-based blackbox testing: acceptance scenarios in Gherkin feature files, their
+checks, the test report and the traceability report. Off unless a project configures it.
+
+include::FR-3.1-test-configuration.adoc[]
+
+include::FR-3.2-feature-files.adoc[]
+
+include::FR-3.3-scenario-traces.adoc[]
+
+include::FR-3.4-test-report.adoc[]
+
+include::FR-3.5-traceability-report.adoc[]
+
+include::FR-3.6-rendered-reports.adoc[]

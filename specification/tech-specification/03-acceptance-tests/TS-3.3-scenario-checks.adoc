@@ -1,0 +1,15 @@
+[[TS-3.3]]
+=== TS-3.3 Scenario checks
+
+Implements <<FR-3.2>> and <<FR-3.3>>.
+
+* `analyze` reads the feature files of every test kind after the documents (`featureFiles`,
+  lexical order), so all anchors are known.
+* Per scenario: the own tags of the test kind's pattern give its ID (exactly one); a duplicate
+  ID is reported with the first location; the ID is registered for reference resolution with
+  the location `<file>:<line>`.
+* Trace tags are the own and inherited tags matching any anchor kind: unknown IDs, IDs of a kind
+  outside `traces`, and no resolving trace are problems (FR-3.3 messages).
+* Problems keep the report order of the existing checks: documents first, then feature files in
+  lexical order, scenarios in file order.
+* `result` gets the scenarios (`[]scenario` with ID, name, file, line, traces) for the reports.

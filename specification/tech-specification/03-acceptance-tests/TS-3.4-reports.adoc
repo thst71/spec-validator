@@ -1,0 +1,33 @@
+[[TS-3.4]]
+=== TS-3.4 Reports
+
+Implements <<FR-3.4>> and <<FR-3.5>>.
+
+==== Results
+* `readResults(path)` decodes Cucumber JSON: an array of features with `uri`, `name` and
+  `elements`; each element with `type` (`scenario` or `background`), `name`, `line`, `tags`
+  (`name`) and `steps` (`keyword`, `name`, `result.status`, `result.error_message`).
+* An element is matched to its scenario by the test ID among its tags; backgrounds are folded
+  into the scenario that follows them.
+* The status of an element is the first step status that is not `passed` (`failed`,
+  `undefined`, `pending`, `skipped`, `ambiguous`), else `passed`; the status of a scenario is
+  the worst over its elements, in the order failed > ambiguous > undefined > pending > skipped
+  > passed; a scenario without elements is `not run`.
+
+==== Test report (`report.go`)
+* Header: `= Test Report`, `:toc: left`, `:sectanchors:`, a line with `{revnumber}` (set at
+  rendering) and the date of writing.
+* Summary table, then one `==` section per feature file (feature name, file), one `===`
+  section per scenario: `[[AT-x.y]]`, title `AT-x.y <name>`, traces as `<<FR-x.y>>`, result,
+  steps as a list; per example row of an outline one block.
+* Step texts, names and error messages are written with `pass:c[…]` (special characters only)
+  and escaped `]`, error messages as a literal block; nothing in them can create markup or
+  references.
+
+==== Traceability report (`trace.go`)
+* Header like the test report, `= Traceability Report`.
+* Sections "Requirements to tests" (each FR/NFR of the documents with its scenarios as
+  `<<AT-x.y>>`, results if `-results` is given), "Tests to requirements", "Orphaned tests",
+  "Uncovered requirements" and a summary.
+* References to `AT` IDs are written only when the test report master exists, else as plain
+  text, so that the traceability report renders on its own.

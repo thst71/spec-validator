@@ -1,0 +1,32 @@
+[[US-3.1]]
+=== US-3.1 Validate feature files
+
+Status:: Open +
+Effort:: 6 h +
+Traces to:: <<TS-3.1>>, <<TS-3.2>>, <<TS-3.3>>, <<FR-3.1>>, <<FR-3.2>>, <<FR-3.3>>
+
+As a developer of a project with requirements-based blackbox testing, I want my feature files
+checked with the specification, so that every scenario has its ID and traces to existing
+requirements.
+
+.Acceptance criteria
+. A configuration with `tests` is accepted and checked as FR-3.1 says; without `tests` the
+  results on every existing test tree are unchanged.
+. Every check of FR-3.2 and FR-3.3 reports with its message and the file and line.
+. `<<AT-x.y>>` in AsciiDoc resolves to a scenario.
+
+.Technical tasks
+. `TestKind`, `Reports` and their checks in `config.go`.
+. `gherkin.go` with `parseFeature`.
+. Scenario checks and test ID registration in `analyze`.
+. Tests below; FR-3.1 to FR-3.3 in the README.
+
+.Test criteria
+* Unit test (`internal/spec`): `parseFeature` on every keyword, tags across lines, inherited
+  feature and rule tags, `Examples` tags, doc strings containing keyword lines, comments,
+  `# language: de`; configuration errors for every FR-3.1 rule.
+* Component test (`cmd/spec-validator`): `run` on a project with feature files, one per
+  message of FR-3.2 and FR-3.3, and a valid one.
+* Integration test: this repository's specification still validates; a fixture project with
+  requirements and feature files validates.
+* Blackbox test: none; the validator is a CLI and its component tests drive `run` in-process.

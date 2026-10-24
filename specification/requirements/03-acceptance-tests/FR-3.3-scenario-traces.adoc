@@ -1,0 +1,15 @@
+[[FR-3.3]]
+=== FR-3.3 Scenario traces
+
+.Acceptance criteria
+. A scenario traces to the items named by its tags and the tags of its `Feature` and `Rule`
+  (inherited), e.g. `@FR-2.1 @NFR-3`.
+. A trace tag must resolve to an anchor: `<file>:<line>: AT-2.1 traces to unknown FR-9.9`.
+. A trace tag of an anchor kind that the test kind does not trace to is reported:
+  `<file>:<line>: AT-2.1 traces to US-1.2; AT traces to FR, NFR only`.
+. A scenario with no trace to a requirement is reported: `<file>:<line>: AT-2.1 references no
+  requirement`.
+. Other tags (e.g. `@wip`, `@slow`) are allowed.
+
+Stakeholder need:: SPEC.md §1.9 +
+Effort:: 2 h

@@ -1,0 +1,14 @@
+[[TS-3.5]]
+=== TS-3.5 Report masters and command line
+
+Implements <<FR-3.4>>, <<FR-3.5>> and <<FR-3.6>>.
+
+* New flags: `-test-report <results.json>`, `-trace-report`, `-results <results.json>` (only
+  with `-trace-report`). Both report modes exclude the other modes; they validate first and
+  write nothing for an invalid specification (exit 1), an unreadable results file is exit 2.
+* `Masters` appends the report masters that exist below the root.
+* `analyze` registers the anchors of an existing test report master (`AT` IDs) and of the
+  traceability report (none), so that `Link` rewrites references between all masters with the
+  existing `masterOf` logic; `<<AT-x.y>>` in other masters points to the test report.
+* The archive names, the archive layout, `checksums.txt` and the `-version` output stay as they
+  are (<<FR-2.1>>).

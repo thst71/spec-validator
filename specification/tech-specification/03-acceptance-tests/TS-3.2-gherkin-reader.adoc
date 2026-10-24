@@ -1,0 +1,15 @@
+[[TS-3.2]]
+=== TS-3.2 Gherkin reader
+
+Implements <<FR-3.2>>.
+
+* Package `internal/spec`, file `gherkin.go`: `parseFeature(file, text string) (feature, []string)`,
+  line-based, standard library only (`AGENTS.md`: no modules).
+* Recognised lines, after trimming: tags (`@a @b`, a `#` starts a comment), `Feature:`,
+  `Rule:`, `Background:`, `Scenario:`/`Example:`, `Scenario Outline:`/`Scenario Template:`,
+  `Examples:`/`Scenarios:`, comments, `"""` and ```` ``` ```` doc strings (skipped to their end),
+  table rows (`|`).
+* Tags collect until the next keyword line and belong to it; tags of `Examples` belong to the
+  outline (they cannot carry an ID).
+* `# language:` other than `en` yields a problem.
+* Result: per scenario its keyword, name, line, own tags and inherited tags (feature and rule).

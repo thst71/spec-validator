@@ -1,0 +1,19 @@
+[[FR-3.2]]
+=== FR-3.2 Feature files
+
+.Acceptance criteria
+. Every `.feature` file below the folder of a test kind is read: `Feature`, `Rule`,
+  `Background`, `Scenario`/`Example`, `Scenario Outline`/`Scenario Template` and `Examples`,
+  tags, comments, doc strings and tables.
+. Every scenario (and scenario outline) carries exactly one tag `@<kind>-<number>` of its test
+  kind, e.g. `@AT-2.1`; a missing or second ID is reported as `<file>:<line>: scenario
+  "<name>" has no AT tag` or `… has 2 AT tags`.
+. A test ID is unique across all feature files: `<file>:<line>: duplicate AT-2.1 (also in
+  <file>:<line>)`.
+. A feature file in another language than English (`# language:`) is reported as not
+  supported.
+. `<<AT-2.1>>` in an AsciiDoc file resolves to the scenario; an unknown test ID is an
+  unresolved reference.
+
+Stakeholder need:: SPEC.md §1.8 +
+Effort:: 3 h

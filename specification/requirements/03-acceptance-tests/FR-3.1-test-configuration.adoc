@@ -1,0 +1,15 @@
+[[FR-3.1]]
+=== FR-3.1 Test configuration
+
+.Acceptance criteria
+. The configuration may list test kinds under `tests`: each with a kind (e.g. `AT`), a folder,
+  a format and the kinds it traces to. Without `tests`, no feature file is read and the
+  validator behaves as before.
+. The only format is `gherkin`; another format is a configuration error, so that later kinds
+  (e.g. manual tests) can be added without changing the file layout.
+. A test kind must not be an anchor kind of a document; its `traces` must name anchor kinds.
+. The configuration may name the report masters under `reports` (`tests`,
+  `traceability`); the defaults are `test-report.adoc` and `traceability-report.adoc`.
+
+Stakeholder need:: SPEC.md §1.8 +
+Effort:: 1 h

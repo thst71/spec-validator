@@ -1,0 +1,33 @@
+[[US-3.2]]
+=== US-3.2 Test report
+
+Status:: Open +
+Effort:: 4 h +
+Traces to:: <<TS-3.4>>, <<TS-3.5>>, <<FR-3.4>>
+
+As a reviewer of a pull request or a reader of a release, I want the results of the acceptance
+tests as a document, so that I can check which scenarios passed without reading CI logs.
+
+.Acceptance criteria
+. `-test-report results.json` writes `test-report.adoc` with summary, features, scenarios,
+  traces, steps and results as FR-3.4 says.
+. Outline rows, backgrounds, results without scenario and scenarios not run appear as FR-3.4
+  says.
+. The report of the fixture renders with `asciidoctor --failure-level INFO` without warnings,
+  also with step texts containing `*`, `_`, `<<x>>`, `]` and `{attr}`.
+
+.Technical tasks
+. `readResults` and the status rules.
+. `report.go` writing the test report.
+. The `-test-report` mode in `main.go`.
+. Tests below.
+
+.Test criteria
+* Unit test: status of an element and of a scenario for every combination of step results;
+  matching by test ID; escaping of hostile texts.
+* Component test: `run -test-report` with a fixture result file, an unreadable file (exit 2),
+  an invalid specification (exit 1).
+* Integration test: golden file of the fixture report; rendering it in the
+  `asciidoctor/docker-asciidoctor` image with `--failure-level INFO` (Docker, as in
+  release-actions; skipped when Docker is missing).
+* Blackbox test: none; see <<US-3.1>>.

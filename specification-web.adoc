@@ -9,3 +9,5 @@ stakeholder input).
 include::specification/requirements/01-validation/index.adoc[]
 
 include::specification/requirements/02-delivery/index.adoc[]
+
+include::specification/requirements/03-acceptance-tests/index.adoc[]

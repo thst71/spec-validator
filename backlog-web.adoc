@@ -9,3 +9,5 @@ requirements.
 include::specification/backlog/01-validator/index.adoc[]
 
 include::specification/backlog/02-delivery/index.adoc[]
+
+include::specification/backlog/03-acceptance-tests/index.adoc[]

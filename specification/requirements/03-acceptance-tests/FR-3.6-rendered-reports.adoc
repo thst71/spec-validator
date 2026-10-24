@@ -1,0 +1,13 @@
+[[FR-3.6]]
+=== FR-3.6 Rendered reports
+
+.Acceptance criteria
+. `-masters` also prints the report masters that exist in the project root, after the
+  configured masters.
+. `-link` turns references between the reports and the other masters into inter-document
+  xrefs: from the reports to requirements, from the traceability report to the scenarios of
+  the test report, and from any master to `AT` IDs when the test report exists.
+. Without report files, `-masters` and `-link` behave as before.
+
+Stakeholder need:: SPEC.md §1.10, SPEC.md §1.11 +
+Effort:: 2 h

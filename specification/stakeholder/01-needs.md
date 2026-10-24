@@ -16,3 +16,17 @@
 7. Releases attach every master as one HTML file. References to items of another master must
    become links between these files; the release pipeline flattens each master with
    `asciidoctor-reducer` and needs the masters and the links from the validator.
+8. Projects that choose requirements-based blackbox testing write their acceptance scenarios
+   as Gherkin feature files. The validator checks them like the AsciiDoc items: every scenario
+   has one ID of the kind `AT`, IDs are unique, and the tags that trace a scenario resolve.
+9. Acceptance scenarios trace bottom-up to requirements only (FR, NFR); user stories and
+   technical specifications are not traced from scenarios.
+10. The results of a test run (Cucumber JSON, written by every Gherkin runner) become a test
+    report in AsciiDoc: on pull requests for a manual look, on releases as part of the
+    documentation.
+11. A release carries a traceability report: top-down from every FR and NFR to the scenarios
+    covering it, from every scenario to its requirements, the scenarios that trace to nothing
+    (orphaned, should be none) and the requirements no scenario covers.
+12. Later iterations add manual test specifications with a report template and a rule that a
+    requirement is completely implemented; the configuration and the reports leave room for
+    further test kinds.

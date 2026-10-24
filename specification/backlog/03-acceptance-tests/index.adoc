@@ -1,0 +1,9 @@
+== Acceptance Tests
+
+include::US-3.1-validate-feature-files.adoc[]
+
+include::US-3.2-test-report.adoc[]
+
+include::US-3.3-traceability-report.adoc[]
+
+include::US-3.4-rendered-reports.adoc[]

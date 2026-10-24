@@ -1,0 +1,13 @@
+== Acceptance Tests
+
+How feature files, results and reports are read, checked and written.
+
+include::TS-3.1-test-configuration.adoc[]
+
+include::TS-3.2-gherkin-reader.adoc[]
+
+include::TS-3.3-scenario-checks.adoc[]
+
+include::TS-3.4-reports.adoc[]
+
+include::TS-3.5-report-masters.adoc[]

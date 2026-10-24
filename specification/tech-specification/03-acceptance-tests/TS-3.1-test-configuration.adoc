@@ -1,0 +1,25 @@
+[[TS-3.1]]
+=== TS-3.1 Test configuration
+
+Implements <<FR-3.1>>.
+
+[source,json]
+----
+{
+  "documents": [ … ],
+  "traceability": [ … ],
+  "tests": [
+    {"kind": "AT", "folder": "specification/acceptance", "format": "gherkin", "traces": ["FR", "NFR"]}
+  ],
+  "reports": {"tests": "test-report.adoc", "traceability": "traceability-report.adoc"}
+}
+----
+
+* `Config` gets `Tests []TestKind` and `Reports Reports`; both optional, so existing
+  configurations and `DefaultConfig` stay valid and BDT stays off.
+* `check` adds: kind matches the kind pattern and is no document kind, folder set, format is
+  `gherkin`, `traces` non-empty and naming document kinds.
+* `Reports` defaults apply to empty fields.
+* The test kinds are kept apart from the document kinds: their IDs live in feature files, not
+  in AsciiDoc anchors. `patterns` add a reference pattern over document and test kinds, so
+  `<<AT-1.1>>` is recognised.

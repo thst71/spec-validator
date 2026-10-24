@@ -1,0 +1,13 @@
+== Release v0.2.1 (2026-10-24)
+
+Built with agent-skills v0.4.0.
+
+v0.2.0 was tagged but not published: its documentation did not render. 0.2.1 publishes the
+features of 0.2.0 (acceptance tests in feature files, test report, traceability report) with
+these fixes.
+
+=== Fixes
+
+* The specification writes literal references and anchors as passthrough, so it renders
+  without warnings (TS-3.1, TS-3.4, TS-3.5, FR-3.2, FR-3.4, US-3.1, US-3.2).
+* The golden file tests of the reports pass on Windows, where Git checks them out with CRLF.

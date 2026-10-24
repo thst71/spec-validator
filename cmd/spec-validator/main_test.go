@@ -224,3 +224,17 @@ func TestTraceReport(t *testing.T) {
 		t.Errorf("missing results: want exit %d, got %d", exitUsage, code)
 	}
 }
+
+func TestMastersWithReports(t *testing.T) {
+	root := bdtProject(t, "@FR-1\nFeature: One\n  @AT-1\n  Scenario: S\n    Then ok\n")
+	writeFile(t, root, "results.json", results)
+	if code, _, stderr := execute("-test-report", filepath.Join(root, "results.json"), root); code != exitValid {
+		t.Fatal(stderr)
+	}
+
+	code, stdout, _ := execute("-masters", root)
+
+	if code != exitValid || stdout != "req.adoc\ntest-report.adoc\n" {
+		t.Errorf("got %d, %q", code, stdout)
+	}
+}

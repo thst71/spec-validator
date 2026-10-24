@@ -44,6 +44,7 @@ The contract tasks are defined in `Taskfile.yml`. Deviation from the profile: `v
 
 - Unit tests (`internal/spec`) build document trees in `t.TempDir()`.
 - Component tests drive `run` in `cmd/spec-validator` in-process.
+- The render chain test (`internal/spec/render_test.go`) renders a project with both reports in the Asciidoctor image of release-actions. It needs Docker and skips itself without it or with `-short`. Its work folder is a unique `os.MkdirTemp` folder below `$HOME/.cache`, because Docker may share only the home directory (Colima), and its cleanup removes only that folder.
 - Blackbox tests of a release (download, checksum, `-version`) are manual.
 
 ### Releases

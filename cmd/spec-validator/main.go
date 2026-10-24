@@ -82,7 +82,7 @@ func run(args []string, stdout, stderr io.Writer) int {
 	var problems []string
 	switch {
 	case *listMasters:
-		for _, master := range spec.Masters(config) {
+		for _, master := range spec.Masters(root, config) {
 			_, _ = fmt.Fprintln(stdout, master)
 		}
 		return exitValid

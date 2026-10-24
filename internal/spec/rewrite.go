@@ -57,8 +57,8 @@ func Link(root string, config Config, out string) ([]string, error) {
 		return r.problems, err
 	}
 	p := newPatterns(config)
-	for _, doc := range config.Documents {
-		file := filepath.Join(out, filepath.FromSlash(doc.Master))
+	for _, master := range Masters(root, config) {
+		file := filepath.Join(out, filepath.FromSlash(master))
 		data, err := os.ReadFile(file)
 		if err != nil {
 			return nil, fmt.Errorf("flattened master: %w", err)
@@ -69,13 +69,13 @@ func Link(root string, config Config, out string) ([]string, error) {
 				match := p.reference.FindStringSubmatch(reference)
 				id, label := match[1], strings.TrimSpace(match[2])
 				target, ok := r.masterOf[id]
-				if !ok || target == doc.Master {
+				if !ok || target == master {
 					return reference
 				}
 				if label == "" {
 					label = id
 				}
-				return "xref:" + relativeMaster(doc.Master, target) + "#" + id + "[" + strings.ReplaceAll(label, "]", `\]`) + "]"
+				return "xref:" + relativeMaster(master, target) + "#" + id + "[" + strings.ReplaceAll(label, "]", `\]`) + "]"
 			})
 		}
 		if err := os.WriteFile(file, []byte(text), 0o644); err != nil {
@@ -99,11 +99,18 @@ func relativeMaster(from, to string) string {
 	return strings.Repeat("../", len(fromParts)-common) + strings.Join(toParts[common:], "/")
 }
 
-// Masters lists the configured master files in configuration order.
-func Masters(config Config) []string {
-	masters := make([]string, len(config.Documents))
-	for i, doc := range config.Documents {
-		masters[i] = doc.Master
+// Masters lists the configured master files in configuration order, then the report masters
+// that exist below root.
+func Masters(root string, config Config) []string {
+	masters := make([]string, 0, len(config.Documents)+2)
+	for _, doc := range config.Documents {
+		masters = append(masters, doc.Master)
+	}
+	tests, traceability := config.reportMasters()
+	for _, report := range []string{tests, traceability} {
+		if isFile(filepath.Join(root, filepath.FromSlash(report))) {
+			masters = append(masters, report)
+		}
 	}
 	return masters
 }

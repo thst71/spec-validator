@@ -101,6 +101,11 @@ the result of every scenario. Orphans and uncovered requirements do not fail the
 problems in the AsciiDoc documents do (exit 1). Scenario IDs become links when the test report
 exists.
 
+Both reports are masters like the others: `-masters` lists the existing ones after the
+configured masters, and `-link` turns references between them into xrefs, so the release
+pipeline renders them into linked HTML files without further setup. Generate the test report
+first, then the traceability report, then render; do not commit the generated reports.
+
 ## Development
 
 This repository follows the agent-skills workflow, vendored into `.agents/skills/`; see [AGENTS.md](AGENTS.md). The quality gate is `task check` ([go-task](https://taskfile.dev) and `golangci-lint` required). Releases come from signed tags as the agent-skills `release` skill describes; each release carries the binaries, the documentation as HTML and `checksums.txt`.

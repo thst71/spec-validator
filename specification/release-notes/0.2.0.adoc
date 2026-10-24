@@ -13,6 +13,8 @@ Built with agent-skills v0.4.0.
 * `-trace-report` writes the traceability report: requirements to tests, tests to
   requirements, orphaned tests and uncovered requirements; `-results` adds the results
   (<<US-3.3>>, <<FR-3.5>>).
+* `-masters` and `-link` include the generated reports, so the release pipeline renders them with
+  the other masters; `+<<AT-x.y>>+` links to the test report (<<US-3.4>>, <<FR-3.6>>).
 
 === Documentation
 

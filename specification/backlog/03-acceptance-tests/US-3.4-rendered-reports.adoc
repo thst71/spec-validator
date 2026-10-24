@@ -1,7 +1,7 @@
 [[US-3.4]]
 === US-3.4 Rendered reports
 
-Status:: Open +
+Status:: Done (0.2.0) +
 Effort:: 2 h +
 Traces to:: <<TS-3.5>>, <<FR-3.6>>
 

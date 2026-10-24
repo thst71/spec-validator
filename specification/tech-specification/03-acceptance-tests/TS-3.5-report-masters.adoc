@@ -7,7 +7,8 @@ Implements <<FR-3.4>>, <<FR-3.5>> and <<FR-3.6>>.
   with `-trace-report`). Both report modes exclude the other modes. `-test-report` writes
   nothing for an invalid specification, `-trace-report` nothing for invalid documents (exit 1);
   an unreadable results file is exit 2.
-* `Masters` appends the report masters that exist below the root.
+* `Masters(root, config)` appends the report masters that exist below the root; `Link` rewrites
+  every master `Masters` lists.
 * `analyze` registers the anchors of an existing test report master (`AT` IDs) and of the
   traceability report (none), so that `Link` rewrites references between all masters with the
   existing `masterOf` logic; `<<AT-x.y>>` in other masters points to the test report.

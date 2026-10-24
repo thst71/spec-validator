@@ -144,9 +144,15 @@ func analyze(root string, config Config) (result, error) {
 	if err != nil {
 		return result{}, err
 	}
+	// Test IDs are anchors of the test report, once it exists
+	testsMaster, _ := config.reportMasters()
+	reported := isFile(filepath.Join(v.root, filepath.FromSlash(testsMaster)))
 	for _, test := range tests {
 		if test.id != "" {
 			anchors[test.id] = test.location()
+			if reported {
+				masterOf[test.id] = testsMaster
+			}
 		}
 	}
 

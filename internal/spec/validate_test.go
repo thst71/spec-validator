@@ -21,7 +21,12 @@ func validTree() tree { return tree{requirement, tech, story} }
 // write creates a minimal project: one chapter per kind with an index and one item file.
 func (tr tree) write(t *testing.T) string {
 	t.Helper()
-	root := t.TempDir()
+	return tr.writeTo(t, t.TempDir())
+}
+
+// writeTo writes the project into root, which must exist.
+func (tr tree) writeTo(t *testing.T, root string) string {
+	t.Helper()
 	chapters := []struct{ master, folder, content string }{
 		{"specification-web.adoc", "specification/requirements", tr.requirement},
 		{"tech-specification-web.adoc", "specification/tech-specification", tr.tech},

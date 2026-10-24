@@ -22,4 +22,4 @@ Implements <<FR-3.1>>.
 * `Reports` defaults apply to empty fields.
 * The test kinds are kept apart from the document kinds: their IDs live in feature files, not
   in AsciiDoc anchors. `patterns` add a reference pattern over document and test kinds, so
-  `<<AT-1.1>>` is recognised.
+  `+<<AT-1.1>>+` is recognised.

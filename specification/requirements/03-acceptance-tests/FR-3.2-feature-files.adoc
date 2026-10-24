@@ -12,7 +12,7 @@
   <file>:<line>)`.
 . A feature file in another language than English (`# language:`) is reported as not
   supported.
-. `<<AT-2.1>>` in an AsciiDoc file resolves to the scenario; an unknown test ID is an
+. `+<<AT-2.1>>+` in an AsciiDoc file resolves to the scenario; an unknown test ID is an
   unresolved reference.
 
 Stakeholder need:: SPEC.md §1.8 +

@@ -14,7 +14,7 @@ tests as a document, so that I can check which scenarios passed without reading 
 . Outline rows, backgrounds, results without scenario and scenarios not run appear as FR-3.4
   says.
 . The report of the fixture renders with `asciidoctor --failure-level INFO` without warnings,
-  also with step texts containing `*`, `_`, `<<x>>`, `]` and `{attr}`.
+  also with step texts containing `+*+`, `+_+`, `+<<x>>+`, `+]+` and `+{attr}+`.
 
 .Technical tasks
 . `readResults` and the status rules.

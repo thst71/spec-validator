@@ -4,7 +4,7 @@
 .Acceptance criteria
 . `-test-report <results.json>` reads the Cucumber JSON of a test run and writes the test report
   master (FR-3.1) in the project root.
-. The report lists per feature file every scenario with its anchor `[[AT-x.y]]`, name, traces as
+. The report lists per feature file every scenario with its anchor `+[[AT-x.y]]+`, name, traces as
   references, its steps and the result: `passed`, `failed` (with the error message), `skipped`,
   `pending`, `undefined` or `not run`. A scenario outline shows one result per example row; its
   result is the worst of them.

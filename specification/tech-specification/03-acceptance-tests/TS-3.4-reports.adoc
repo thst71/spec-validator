@@ -20,7 +20,7 @@ Implements <<FR-3.4>> and <<FR-3.5>>.
 * Header: `= Test Report`, `:toc: left`, `:sectanchors:`, a line with `{revnumber}` (set at
   rendering) and the date of writing.
 * Summary table, then one `==` section per feature file (feature name, file), one `===`
-  section per scenario: `[[AT-x.y]]`, title `AT-x.y <name>`, traces as `<<FR-x.y>>`, result,
+  section per scenario: `+[[AT-x.y]]+`, title `AT-x.y <name>`, traces as `+<<FR-x.y>>+`, result,
   steps as a list; per example row of an outline one block.
 * Step texts, names and error messages are written with `pass:c[…]` (special characters only)
   and escaped `]`, error messages as a literal block; nothing in them can create markup or

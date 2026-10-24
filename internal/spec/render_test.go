@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -19,8 +20,11 @@ func TestRenderChain(t *testing.T) {
 	if testing.Short() {
 		t.Skip("renders in Docker")
 	}
-	if err := exec.Command("docker", "info").Run(); err != nil {
+	// The image is a Linux image; Docker on a Windows runner may run Windows containers only.
+	if osType, err := exec.Command("docker", "info", "--format", "{{.OSType}}").Output(); err != nil {
 		t.Skip("Docker is not available")
+	} else if strings.TrimSpace(string(osType)) != "linux" {
+		t.Skipf("Docker runs %s containers, the render image needs linux", strings.TrimSpace(string(osType)))
 	}
 	// Docker may share only the home directory (e.g. Colima), not the system's temp folders.
 	// The work folder has a unique name, and the cleanup removes exactly that folder.

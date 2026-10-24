@@ -93,7 +93,8 @@ func readResults(path string, config Config) (runResults, error) {
 	if err := json.Unmarshal(data, &features); err != nil {
 		return runResults{}, fmt.Errorf("%s: %w", path, err)
 	}
-	idTag := regexp.MustCompile(`^@(` + idPattern(config.testKinds()) + `)$`)
+	// cucumber-js and playwright-bdd write tags with @, pytest-bdd without
+	idTag := regexp.MustCompile(`^@?(` + idPattern(config.testKinds()) + `)$`)
 	r := runResults{byID: map[string][]cucumberElement{}}
 	for _, feature := range features {
 		var background []cucumberStep

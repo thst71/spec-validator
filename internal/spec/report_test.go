@@ -128,3 +128,22 @@ func TestTestReportUnreadableResults(t *testing.T) {
 		t.Errorf("want an error naming the file, got %v", err)
 	}
 }
+
+// pytest-bdd writes tags without the leading @ and URIs relative to its features folder.
+func TestResultsWithoutAtSign(t *testing.T) {
+	root, _ := bdtTree(t)
+	writeFile(t, root, "pytest-bdd.json", `[{"uri": "greeting.feature", "name": "Greeting", "tags": [{"name": "FR-1.1", "line": 1}], "elements": [
+	  {"type": "scenario", "name": "Greet", "line": 7, "tags": [{"name": "AT-1.1", "line": 6}],
+	   "steps": [{"keyword": "Then", "name": "I see \"Hello\"", "result": {"status": "passed"}}]}]}]`)
+
+	run, err := readResults(filepath.Join(root, "pytest-bdd.json"), bdtConfig())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := run.statusOf("AT-1.1"); got != "passed" {
+		t.Errorf("want passed, got %s", got)
+	}
+	if len(run.unmatched) != 0 {
+		t.Errorf("want no unmatched results, got %+v", run.unmatched)
+	}
+}

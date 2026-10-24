@@ -7,8 +7,10 @@ Implements <<FR-3.4>> and <<FR-3.5>>.
 * `readResults(path)` decodes Cucumber JSON: an array of features with `uri`, `name` and
   `elements`; each element with `type` (`scenario` or `background`), `name`, `line`, `tags`
   (`name`) and `steps` (`keyword`, `name`, `result.status`, `result.error_message`).
-* An element is matched to its scenario by the test ID among its tags; backgrounds are folded
-  into the scenario that follows them.
+* An element is matched to its scenario by the test ID among its tags, written with `@`
+  (cucumber-js, playwright-bdd) or without (pytest-bdd); backgrounds are folded into the
+  scenario that follows them. The URI is not used for matching, as runners write it relative
+  to different folders.
 * The status of an element is the first step status that is not `passed` (`failed`,
   `undefined`, `pending`, `skipped`, `ambiguous`), else `passed`; the status of a scenario is
   the worst over its elements, in the order failed > ambiguous > undefined > pending > skipped

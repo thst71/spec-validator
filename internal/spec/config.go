@@ -28,11 +28,34 @@ type Trace struct {
 	Name     string   `json:"name"` // what is missing, for the message: "requirement"
 }
 
+// TestKind is a kind of test whose IDs live in test files instead of AsciiDoc anchors, e.g.
+// acceptance scenarios (AT) in Gherkin feature files.
+type TestKind struct {
+	Kind   string   `json:"kind"`
+	Folder string   `json:"folder"`
+	Format string   `json:"format"` // only "gherkin"; manual tests may add another format
+	Traces []string `json:"traces"` // the anchor kinds a test may trace to, e.g. FR, NFR
+}
+
+// Reports names the generated report masters; empty fields take the defaults.
+type Reports struct {
+	Tests        string `json:"tests"`
+	Traceability string `json:"traceability"`
+}
+
 // Config describes the layout of a project's specification.
 type Config struct {
 	Documents    []Document `json:"documents"`
 	Traceability []Trace    `json:"traceability"`
+	Tests        []TestKind `json:"tests"`
+	Reports      Reports    `json:"reports"`
 }
+
+// Default names of the report masters in the project root.
+const (
+	DefaultTestReport  = "test-report.adoc"
+	DefaultTraceReport = "traceability-report.adoc"
+)
 
 var kindPattern = regexp.MustCompile(`^[A-Z][A-Z0-9]*$`)
 
@@ -104,7 +127,50 @@ func (c Config) check() error {
 			}
 		}
 	}
+	tests := map[string]bool{}
+	for _, test := range c.Tests {
+		switch {
+		case !kindPattern.MatchString(test.Kind):
+			return fmt.Errorf("invalid test kind %q", test.Kind)
+		case known[test.Kind]:
+			return fmt.Errorf("test kind %q is an anchor kind of a document", test.Kind)
+		case tests[test.Kind]:
+			return fmt.Errorf("test kind %q is defined twice", test.Kind)
+		case test.Folder == "":
+			return fmt.Errorf("test kind %q needs a folder", test.Kind)
+		case test.Format != "gherkin":
+			return fmt.Errorf("test kind %q: unsupported format %q (supported: gherkin)", test.Kind, test.Format)
+		case len(test.Traces) == 0:
+			return fmt.Errorf("test kind %q needs traces", test.Kind)
+		}
+		for _, kind := range test.Traces {
+			if !known[kind] {
+				return fmt.Errorf("test kind %q traces to unknown kind %q", test.Kind, kind)
+			}
+		}
+		tests[test.Kind] = true
+	}
 	return nil
+}
+
+// reportMasters returns the paths of the test report and the traceability report.
+func (c Config) reportMasters() (tests, traceability string) {
+	tests, traceability = c.Reports.Tests, c.Reports.Traceability
+	if tests == "" {
+		tests = DefaultTestReport
+	}
+	if traceability == "" {
+		traceability = DefaultTraceReport
+	}
+	return tests, traceability
+}
+
+func (c Config) testKinds() []string {
+	kinds := make([]string, len(c.Tests))
+	for i, test := range c.Tests {
+		kinds[i] = test.Kind
+	}
+	return kinds
 }
 
 func (c Config) kinds() []string {

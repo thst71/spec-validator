@@ -131,3 +131,36 @@ func TestLinkWithProblems(t *testing.T) {
 		t.Errorf("want exit %d, got %d", exitProblems, code)
 	}
 }
+
+// bdtProject writes a project with one requirement and acceptance tests in feature files.
+func bdtProject(t *testing.T, feature string) string {
+	t.Helper()
+	root := t.TempDir()
+	writeFile(t, root, "req.adoc", "include::req/item.adoc[]\n")
+	writeFile(t, root, "req/item.adoc", "[[FR-1]]\n=== One\n")
+	writeFile(t, root, "acceptance/one.feature", feature)
+	writeFile(t, root, ".spec-validator.json", `{"documents": [{"master": "req.adoc", "folder": "req", "kinds": ["FR"]}],
+ "tests": [{"kind": "AT", "folder": "acceptance", "format": "gherkin", "traces": ["FR"]}]}`)
+	return root
+}
+
+func TestFeatureFiles(t *testing.T) {
+	code, stdout, _ := execute(bdtProject(t, "@FR-1\nFeature: One\n  @AT-1\n  Scenario: S\n    Then ok\n"))
+	if code != exitValid || !strings.Contains(stdout, "specifications are valid") {
+		t.Errorf("valid project: got %d, %q", code, stdout)
+	}
+
+	code, _, stderr := execute(bdtProject(t, "Feature: One\n  Scenario: S\n    Then ok\n"))
+	for _, want := range []string{
+		`acceptance/one.feature:2: scenario "S" has no AT tag`,
+		`acceptance/one.feature:2: scenario "S" references no requirement`,
+		"2 problem(s) found",
+	} {
+		if !strings.Contains(stderr, want) {
+			t.Errorf("missing %q in %q", want, stderr)
+		}
+	}
+	if code != exitProblems {
+		t.Errorf("want exit %d, got %d", exitProblems, code)
+	}
+}

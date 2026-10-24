@@ -63,6 +63,27 @@ Without configuration, the layout of the `spec-system` skill applies. A `.spec-v
 
 A traceability rule requires every item of `kind` to reference at least one item of the `requires` kinds; `name` appears in the message.
 
+## Acceptance Tests
+
+Projects with requirements-based blackbox testing write acceptance scenarios as Gherkin feature
+files and configure a test kind:
+
+```json
+"tests": [{"kind": "AT", "folder": "specification/acceptance", "format": "gherkin", "traces": ["FR", "NFR"]}]
+```
+
+Every `.feature` file below the folder is checked (feature files are in English):
+
+- every scenario and scenario outline has exactly one ID tag, e.g. `@AT-2.1`, unique across all
+  feature files; an ID tag on `Feature`, `Rule` or `Examples` is reported,
+- trace tags on the scenario, its `Feature` or `Rule` or its `Examples` (e.g. `@FR-2.1`) resolve
+  to an anchor of a kind named in `traces`; tags of other anchor kinds (e.g. `@US-1.2`) are
+  reported, other tags (`@wip`) are free,
+- every scenario traces to at least one requirement,
+- `<<AT-2.1>>` in AsciiDoc resolves to the scenario.
+
+Without `tests`, feature files are not read.
+
 ## Development
 
 This repository follows the agent-skills workflow, vendored into `.agents/skills/`; see [AGENTS.md](AGENTS.md). The quality gate is `task check` ([go-task](https://taskfile.dev) and `golangci-lint` required). Releases come from signed tags as the agent-skills `release` skill describes; each release carries the binaries, the documentation as HTML and `checksums.txt`.

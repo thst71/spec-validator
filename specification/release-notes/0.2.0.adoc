@@ -1,6 +1,13 @@
-== Release v0.1.2 (unreleased)
+== Release v0.2.0 (unreleased)
 
 Built with agent-skills v0.4.0.
+
+=== Features
+
+* Acceptance tests in Gherkin feature files: test kinds under `tests` in the configuration
+  (`AT`, format `gherkin`, tracing to FR and NFR); every scenario has one unique test ID, its
+  trace tags resolve to requirements, and `+<<AT-x.y>>+` resolves in AsciiDoc. Off without
+  `tests` (<<US-3.1>>, <<FR-3.1>>, <<FR-3.2>>, <<FR-3.3>>).
 
 === Documentation
 

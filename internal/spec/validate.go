@@ -38,12 +38,19 @@ func newPatterns(config Config) patterns {
 	if len(kinds) == 0 {
 		return patterns{}
 	}
-	id := `(?:` + strings.Join(quote(kinds), "|") + `)-\d+(?:\.\d+)*`
+	id := idPattern(kinds)
+	// References also reach the IDs of test kinds, which live in test files
+	referenced := idPattern(append(kinds, config.testKinds()...))
 	return patterns{
 		anchor:    regexp.MustCompile(`(?m)^(?:\[\[(` + id + `)\]\]|\[#(` + id + `)\])[ \t]*$`),
 		shorthand: regexp.MustCompile(`(?m)^\[#(` + id + `)\]([ \t]*\r?)$`),
-		reference: regexp.MustCompile(`<<(` + id + `)(?:,([^>]*))?>>`),
+		reference: regexp.MustCompile(`<<(` + referenced + `)(?:,([^>]*))?>>`),
 	}
+}
+
+// idPattern matches the IDs of the given kinds, e.g. FR-1.2.
+func idPattern(kinds []string) string {
+	return `(?:` + strings.Join(quote(kinds), "|") + `)-\d+(?:\.\d+)*`
 }
 
 type validator struct {
@@ -52,10 +59,12 @@ type validator struct {
 	problems []string
 }
 
-// result is a validation pass: the problems and, for the links, the master defining each ID.
+// result is a validation pass: the problems, for the links the master defining each ID, and
+// the tests found in test files.
 type result struct {
 	problems []string
 	masterOf map[string]string
+	tests    []testCase
 }
 
 // Validate returns all problems found below root; an empty list means the specification is
@@ -122,6 +131,18 @@ func analyze(root string, config Config) (result, error) {
 		}
 	}
 
+	// Test files after the documents, so that every anchor is known; their problems are reported
+	// after those of the documents.
+	tests, testProblems, err := v.testFiles(config, anchors)
+	if err != nil {
+		return result{}, err
+	}
+	for _, test := range tests {
+		if test.id != "" {
+			anchors[test.id] = test.location()
+		}
+	}
+
 	for _, doc := range documents {
 		for _, id := range v.references(doc.text) {
 			if _, ok := anchors[id]; !ok {
@@ -144,7 +165,7 @@ func analyze(root string, config Config) (result, error) {
 			}
 		}
 	}
-	return result{problems: v.problems, masterOf: masterOf}, nil
+	return result{problems: append(v.problems, testProblems...), masterOf: masterOf, tests: tests}, nil
 }
 
 func (v *validator) report(format string, args ...any) {

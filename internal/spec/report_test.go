@@ -101,7 +101,8 @@ func TestTestReport(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if string(got) != string(want) {
+	// Git may check the golden file out with CRLF (Windows)
+	if string(got) != strings.ReplaceAll(string(want), "\r\n", "\n") {
 		_ = os.WriteFile("testdata/test-report.adoc.got", got, 0o644)
 		t.Errorf("report differs from testdata/test-report.adoc; see testdata/test-report.adoc.got")
 	}

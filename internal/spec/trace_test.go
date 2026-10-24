@@ -115,7 +115,8 @@ func assertGolden(t *testing.T, gotFile, wantFile string) {
 		t.Fatal(err)
 	}
 	want, err := os.ReadFile(wantFile)
-	if err != nil || string(got) != string(want) {
+	// Git may check the golden file out with CRLF (Windows)
+	if err != nil || string(got) != strings.ReplaceAll(string(want), "\r\n", "\n") {
 		_ = os.WriteFile(wantFile+".got", got, 0o644)
 		t.Errorf("%s differs from %s; see %s.got", gotFile, wantFile, wantFile)
 	}

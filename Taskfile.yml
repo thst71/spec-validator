@@ -11,8 +11,10 @@ tasks:
     cmds:
       - test -z "$(gofmt -l cmd internal)" || { gofmt -l cmd internal; exit 1; }
   test:
+    desc: Writes the time of every test to build/test/junit.xml (gotestsum, pinned, not in go.mod).
     cmds:
-      - go test -race -cover ./...
+      - mkdir -p build/test
+      - go run gotest.tools/gotestsum@v1.13.0 --junitfile build/test/junit.xml -- -race -cover ./...
   validate-specs:
     desc: Validates this repository's specification from source; the launcher would pin a release of itself.
     cmds:

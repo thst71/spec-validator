@@ -4,8 +4,8 @@
 Implements <<FR-2.1>>, <<NFR-1>> and <<NFR-2>>.
 
 * `Taskfile.yml` maps the agent-skills task contract: `typecheck` = `go build ./...`, `lint` =
-  `golangci-lint run`, `format-check` = `gofmt -l`, `test` = `go test -race -cover ./...`,
-  `validate-specs` = `go run ./cmd/spec-validator` (from source: the launcher would run a
+  `golangci-lint run`, `format-check` = `gofmt -l`, `test` = `go test -race -cover ./...` run by
+  `gotestsum`, which writes the time of every test to `build/test/junit.xml`, `validate-specs` = `go run ./cmd/spec-validator` (from source: the launcher would run a
   pinned release of this very tool), `check` = all of them.
 * `.github/workflows/ci.yml`: the gate on ubuntu and macos, `go test ./...` on windows.
 * `.github/workflows/release.yml`: the agent-skills release template with the go-task Release
